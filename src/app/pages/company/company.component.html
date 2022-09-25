@@ -1,0 +1,337 @@
+
+<ng-container *ngIf="!(loadingSubject$ | async); else loadingTpl">
+    
+    <div class="card mb-5 mb-xl-10">
+        <div
+                class="card-header border-0"
+        >
+            <h3 class="card-title align-items-start flex-column">
+                <!-- <span class="card-label fw-bolder fs-3 mb-1">Alkalmi</span> -->
+                <!-- <span class="card-label fw-bolder fs-3 mb-1" *ngFor="let listTagName of listTag">{{ listTagName.tagCategoryId }}</span> -->
+                <span class="text-muted mt-1 fw-bold fs-7">{{ !isNew ? 'Szerkesztés' : 'Új hozzáadása' }}</span>
+            </h3>
+        </div>
+        <div id="kt_account_profile_details" class="collapse show">
+                <form novalidate="novalidate" class="form" [formGroup]="companyForm">
+                    <div class="card-body border-top p-9">
+                        <div class="row mb-6">
+                            <label class="col-lg-4 col-form-label required fw-bold fs-6">Megnevezés</label>
+                            <div class="col-lg-8 fv-row">
+                                <input
+                                        type="text"
+                                        class="form-control form-control-lg form-control-solid"
+                                        placeholder="Megnevezés"
+                                        name="name"
+                                        formControlName="name"
+                                        autocomplete="off"
+                                        [ngClass]="{
+                                            'is-invalid': companyForm.controls['name'].invalid,
+                                            'is-valid': companyForm.controls['name'].valid
+                                        }"
+                                />
+    
+                                <ng-container class="fv-help-block" class="fv-help-block"
+                                [ngTemplateOutlet]="formError"
+                                [ngTemplateOutletContext]="{
+                                    validation: 'required',
+                                    message: 'Megnevezés kötelező',
+                                    control: companyForm.controls['name']
+                                }"
+                                ></ng-container>
+                            </div>
+                        </div>
+                        <div class="row mb-0">
+                            <label class="col-lg-4 col-form-label fw-bold fs-6"
+                            >Aktív</label
+                            >
+                            <div class="col-lg-8 d-flex align-items-center">
+                                <div class="form-check form-check-solid form-switch fv-row">
+                                    <input
+                                            class="form-check-input w-45px h-30px"
+                                            type="checkbox" 
+                                            formControlName="isActive"
+                                            [checked]="this.companyForm.controls['isActive'].value"
+                                            id="isActive"
+                                    /><label class="form-check-label"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-6">
+                            <label class="col-lg-4 col-form-label required fw-bold fs-6">Telefonszám</label>
+                            <div class="col-lg-8 fv-row">
+                                <input
+                                        type="text"
+                                        class="form-control form-control-lg form-control-solid"
+                                        placeholder="Telefonszám"
+                                        name="phone"
+                                        formControlName="phone"
+                                        autocomplete="off"
+                                        [ngClass]="{
+                                            'is-invalid': companyForm.controls['phone'].invalid,
+                                            'is-valid': companyForm.controls['phone'].valid
+                                        }"
+                                />
+    
+                                <ng-container class="fv-help-block" class="fv-help-block"
+                                [ngTemplateOutlet]="formError"
+                                [ngTemplateOutletContext]="{
+                                    validation: 'required',
+                                    message: 'Telefonszám kötelező',
+                                    control: companyForm.controls['phone']
+                                }"
+                                ></ng-container>
+                            </div>
+                        </div>
+                        <div class="row mb-6">
+                            <label class="col-lg-4 col-form-label fw-bold fs-6">Fax</label>
+                            <div class="col-lg-8 fv-row">
+                                <input
+                                        type="text"
+                                        class="form-control form-control-lg form-control-solid"
+                                        placeholder="Fax"
+                                        name="fax"
+                                        formControlName="fax"
+                                        autocomplete="off"
+                                />
+                            </div>
+                        </div>
+                        <div class="row mb-6">
+                            <label class="col-lg-4 col-form-label fw-bold fs-6">E-mail cím</label>
+                            <div class="col-lg-8 fv-row">
+                                <input
+                                        type="text"
+                                        class="form-control form-control-lg form-control-solid"
+                                        placeholder="email"
+                                        name="email"
+                                        formControlName="email"
+                                        autocomplete="off"
+                                />
+                            </div>
+                        </div>
+                        <div class="row mb-6">
+                            <label class="col-lg-4 col-form-label fw-bold fs-6">Honlap/blog URL
+                            </label>
+                            <div class="col-lg-8 fv-row">
+                                <input
+                                        type="text"
+                                        class="form-control form-control-lg form-control-solid"
+                                        placeholder="website"
+                                        name="website"
+                                        formControlName="website"
+                                        autocomplete="off"
+                                />
+                            </div>
+                        </div>
+                        <div class="row mb-6">
+                            <label class="col-lg-4 col-form-label fw-bold fs-6"
+                            ><span class="required">Ország</span></label
+                            >
+                            <div class="col-lg-8 fv-row">
+                                <select
+                                        class="form-select form-select-solid form-select-lg fw-bold"
+                                        name="countryId"
+                                        formControlName="countryId"
+                                        autocomplete="off"
+                                        [ngClass]="{
+                                            'is-invalid': companyForm.controls['countryId'].invalid,
+                                            'is-valid': companyForm.controls['countryId'].valid
+                                        }"
+                                >
+                                    <option selected="selected">Kérlek válassz...</option>
+                                    <option *ngFor="let country of countries" 
+                                            [ngValue]="country.id" 
+                                            [selected]="country.id == this.companyForm.controls['countryId'].value">
+                                            {{ country.name }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-6">
+                            <label class="col-lg-4 col-form-label fw-bold fs-6"
+                            ><span class="required">Megye</span></label
+                            >
+                            <div class="col-lg-8 fv-row">
+                                <select
+                                        class="form-select form-select-solid form-select-lg fw-bold"
+                                        name="countyId"
+                                        formControlName="countyId"
+                                        autocomplete="off"
+                                        [ngClass]="{
+                                            'is-invalid': companyForm.controls['countyId'].invalid,
+                                            'is-valid': companyForm.controls['countyId'].valid
+                                        }"
+                                >
+                                    <option selected="selected">Kérlek válassz...</option>
+                                    <option *ngFor="let county of counties" 
+                                            [ngValue]="county.id" 
+                                            [selected]="county.id == this.companyForm.controls['countyId'].value">
+                                            {{ county.name }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-6">
+                            <label class="col-lg-4 col-form-label fw-bold fs-6">Irányítószám
+                            </label>
+                            <div class="col-lg-8 fv-row">
+                                <input
+                                        type="text"
+                                        class="form-control form-control-lg form-control-solid"
+                                        placeholder="zip"
+                                        name="zip"
+                                        formControlName="zip"
+                                        autocomplete="off"
+                                />
+                            </div>
+                        </div>
+                        <div class="row mb-6">
+                            <label class="col-lg-4 col-form-label required fw-bold fs-6">Település</label>
+                            <div class="col-lg-8 fv-row">
+                                <input
+                                        type="text"
+                                        class="form-control form-control-lg form-control-solid"
+                                        placeholder="Település"
+                                        name="name"
+                                        formControlName="city"
+                                        autocomplete="off"
+                                        [ngClass]="{
+                                            'is-invalid': companyForm.controls['city'].invalid,
+                                            'is-valid': companyForm.controls['city'].valid
+                                        }"
+                                />
+    
+                                <ng-container class="fv-help-block" class="fv-help-block"
+                                [ngTemplateOutlet]="formError"
+                                [ngTemplateOutletContext]="{
+                                    validation: 'required',
+                                    message: 'Megnevezés kötelező',
+                                    control: companyForm.controls['city']
+                                }"
+                                ></ng-container>
+                            </div>
+                        </div>
+                        <div class="row mb-6">
+                            <label class="col-lg-4 col-form-label fw-bold fs-6">Utca, házszám
+                            </label>
+                            <div class="col-lg-8 fv-row">
+                                <input
+                                        type="text"
+                                        class="form-control form-control-lg form-control-solid"
+                                        placeholder="address"
+                                        name="address"
+                                        formControlName="address"
+                                        autocomplete="off"
+                                />
+                            </div>
+                        </div>
+                        <div class="row mb-6">
+                            <label class="col-lg-4 col-form-label fw-bold fs-6">Cégjegyzékszám
+                            </label>
+                            <div class="col-lg-8 fv-row">
+                                <input
+                                        type="text"
+                                        class="form-control form-control-lg form-control-solid"
+                                        placeholder="registrationNumber"
+                                        name="registrationNumber"
+                                        formControlName="registrationNumber"
+                                        autocomplete="off"
+                                />
+                            </div>
+                        </div>
+                        <div class="row mb-6">
+                            <label class="col-lg-4 col-form-label fw-bold fs-6">
+                                Adószám
+                            </label>
+                            <div class="col-lg-8 fv-row">
+                                <input
+                                        type="text"
+                                        class="form-control form-control-lg form-control-solid"
+                                        placeholder="taxNumber"
+                                        name="taxNumber"
+                                        formControlName="taxNumber"
+                                        autocomplete="off"
+                                />
+                            </div>
+                        </div>
+                        <div class="row mb-6">
+                            <label class="col-lg-4 col-form-label fw-bold fs-6">Bankszámlaszám</label>
+                            <div class="col-lg-8 fv-row">
+                                <input
+                                        type="text"
+                                        class="form-control form-control-lg form-control-solid"
+                                        placeholder="bankAccountNumber"
+                                        name="bankAccountNumber"
+                                        formControlName="bankAccountNumber"
+                                        autocomplete="off"
+                                />
+                            </div>
+                        </div>
+
+                        <div class="row mb-6">
+                            <label class="col-lg-4 col-form-label fw-bold fs-6">Mobilszám</label>
+                            <div class="col-lg-8 fv-row">
+                                <input
+                                        type="text"
+                                        class="form-control form-control-lg form-control-solid"
+                                        placeholder="phone_1"
+                                        name="phone_1"
+                                        formControlName="phone_1"
+                                        autocomplete="off"
+                                />
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="card-footer d-flex justify-content-end py-6 px-9">
+                        <div class="alert alert-danger" *ngIf="error">
+                            <h3>Hiba történt a mentés során!</h3>
+                            <p [innerHTML]="errorMsg"></p>
+                        </div>
+                        <button (click)="reset()"
+                                type="button"
+                                class="btn explore-btn-secondary me-5"
+                        >
+                            Mégsem
+                        </button>
+                        <button
+                                type="button"
+                                class="btn btn-primary"
+                                [disabled]="!companyForm.valid"
+                                (click)="saveSettings()"
+                        >
+                            <ng-container *ngIf="!isLoading">Mentés</ng-container>
+                            <ng-container *ngIf="isLoading">
+                    <span clas="indicator-progress" [style.display]="'block'">
+                      Kérem várj...{{ " " }}
+                      <span
+                              class="spinner-border spinner-border-sm align-middle ms-2"
+                      ></span>
+                    </span>
+                            </ng-container>
+                        </button>
+                    </div>
+                </form>
+                <ng-template
+                    #formError
+                    let-control="control"
+                    let-message="message"
+                    let-validation="validation"
+                    >
+                    <ng-container
+                        *ngIf="control.hasError(validation) && (control.dirty || control.touched)"
+                    >
+                        <div class="fv-plugins-message-container">
+                        <span role="alert">
+                            {{ message }}
+                        </span>
+                        </div>
+                    </ng-container>
+                </ng-template>
+            </div>
+    </div>
+    
+    </ng-container>
+    
+    <ng-template #loadingTpl>
+        <h4>Betöltés...</h4>
+    </ng-template>

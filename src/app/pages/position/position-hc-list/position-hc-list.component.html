@@ -1,0 +1,163 @@
+
+<div class="card mb-5 mb-xl-8" *ngIf="isLoading">
+    <!-- begin::Header -->
+    <div class="card-header border-0 pt-5">
+        <h3 class="card-title align-tags-start flex-column">
+            <span class="card-label fw-bolder fs-3 mb-1">Pozíciók</span>
+            <span class="text-muted mt-1 fw-bold fs-7">Találat: {{ countPosition }} db</span>
+        </h3>
+        <div class="card-toolbar">
+            <!-- begin::Menu -->
+            <div class="d-flex align-tags-center position-relative me-4">
+      <span
+              
+              class="svg-icon svg-icon-3 position-absolute ms-3"
+      ></span>
+                <input
+                        type="text"
+                        id="kt_filter_search0"
+                        class="form-control form-control-white form-control-sm w-150px ps-9"
+                        placeholder="Search"
+                />
+            </div>
+            <a class="btn btn-primary btn-sm cursor-pointer me-4" href="./position/detail/new"> Új pozíció </a>
+            <button
+                    type="button"
+                    class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary"
+                    data-kt-menu-trigger="click"
+                    data-kt-menu-placement="bottom-end"
+                    data-kt-menu-flip="top-end"
+            >
+  <span
+          
+          class="svg-icon svg-icon-2"
+  ></span>
+            </button>
+
+            <!-- begin::Menu 2 -->
+            <app-dropdown-menu2></app-dropdown-menu2>
+            <!-- end::Menu 2 -->
+            <!-- end::Menu -->
+        </div>
+    </div>
+    <!-- end::Header -->
+    <!-- begin::Body -->
+    
+    <div class="card-body py-3">
+        <p-table [responsive]="true" #dt [value]="listPositions" dataKey="id" [columns]="cols"
+        [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [loading]="loading"
+        [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [globalFilterFields]="['name', 'types', 'category']">
+        <!-- <ng-template pTemplate="caption">
+            <div class="flex">
+                <span class="p-input-icon-left mr-auto">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Search keyword" />
+                </span>
+            </div>
+        </ng-template> -->
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th *ngFor="let col of columns">
+                    {{ col.header }}
+                </th>
+            </tr>
+            <tr>
+                <th *ngFor="let col of columns" [ngSwitch]="col.field">
+                    <input *ngSwitchCase="'id'" placeholder="Azonosító" pInputText type="text" class="form-control"
+                        (input)="dt.filter($event.target.value, col.field, 'contains')" />
+
+                    <input *ngSwitchCase="'name'" placeholder="Pozíció elnevezése" pInputText type="text" class="form-control"
+                        (input)="dt.filter($event.target.value, col.field, 'contains')" />
+
+                    <p-dropdown *ngSwitchCase="'companyId'" placeholder="Cég" [showClear]="true" optionLabel="name" optionValue="id" [filter]="true"
+                     [options]="listCompany" 
+                    [style]="{'width':'100%'}" (onChange)="dt.filter($event.value, col.field, 'equals')">
+                    </p-dropdown>
+                    
+                    <p-dropdown *ngSwitchCase="'status'" placeholder="Státusz" [showClear]="true" optionLabel="name" optionValue="value"
+                     [options]="status" 
+                    [style]="{'width':'100%'}" (onChange)="dt.filter($event.value, col.field, 'equals')">
+                    </p-dropdown>
+
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-position>
+            <tr>
+                <td>
+                    <span class="text-dark fw-bolder fs-6">
+                        {{ position.id }}
+                    </span>
+                </td>
+                <td>
+                    <a [routerLink]="['/position/position-hc/details/'+position.id]" target="_blank" class="text-dark fw-bolder text-hover-primary fs-6">
+                        {{ position.name }}
+                    </a>
+                </td>
+                <td>
+                    <span class="text-dark fw-bolder fs-6">
+                        {{ position.companyId | lbFetch:"companies":"name" | async }}
+                    </span>
+                </td>
+                <td>
+                    <span class="text-dark fw-bolder fs-6">
+                        {{ position.countyId | lbFetch:"counties":"name" | async }}
+                    </span>
+                </td>
+                <!-- <td>
+                    <span class="text-dark fw-bolder fs-6">
+                        {{ position.ownerUserId | lbFetch:"positions":"name" | async }}
+                    </span>
+                </td> -->
+                <td>
+                    <span  class="badge fw-bolder me-auto px-4 py-3"
+                     [ngClass]="{'badge-light': position.status === 10,
+                                'badge-primary': position.status === 20,
+                                'badge-warning': position.status === 30,
+                                'badge-success': position.status === 40,
+                                'badge-dark': position.status === 50,
+                                'badge-dark': position.status === 60
+                                }">
+                        {{ (position.status === 10) ? 'szerkesztett' 
+                            : (position.status === 20) ? 'rögzített'
+                            : (position.status === 30) ? 'jóváhagyott'
+                            : (position.status === 40) ? 'megvalósult'
+                            : (position.status === 50) ? 'lezárult'
+                            : (position.status === 60) ?'törölt' 
+                            : '' 
+                        }}
+                    </span>
+                </td>
+                <td>
+                    <button
+                    (click)="detail(position.id)"
+                            class="
+            btn btn-icon btn-bg-light btn-active-color-primary btn-sm
+            me-1
+          "
+                    >
+          <span [inlineSVG]="'./assets/media/icons/duotune/art/art005.svg'"
+          class="svg-icon svg-icon-3"
+
+          ></span>
+                </button>
+                    <a (click)="delete(position.id)"
+                    class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm">
+          <span
+                  [inlineSVG]="'./assets/media/icons/duotune/general/gen027.svg'"
+                  class="svg-icon svg-icon-3"
+          ></span>
+                </a>
+                </td>
+            </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="5">Nincs találat.</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>  
+    <!-- begin::Body -->
+</div>

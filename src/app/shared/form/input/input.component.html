@@ -1,0 +1,10 @@
+<ng-container>
+  <div [formGroup]="formGroup">
+    <label [ngClass]="{'required': formGroup.get(name)?.errors?.required}" class="col-lg-4 col-form-label required fw-bold fs-6">{{ label }}</label>
+    <input [type]="type" [formControlName]="name" [autocomplete]="autocomplete" class="form-control form-control-lg form-control-solid">
+    <div class="fv-plugins-message-container d-none" *ngIf="control?.invalid && (control?.dirty || control?.touched)">
+      <div class="fv-help-block">{{ required }}</div>
+    </div> 
+  </div>
+</ng-container>
+

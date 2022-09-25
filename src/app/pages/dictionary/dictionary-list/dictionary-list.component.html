@@ -1,0 +1,145 @@
+
+<div class="card mb-5 mb-xl-8" *ngIf="isLoading">
+    <!-- begin::Header -->
+    <div class="card-header border-0 pt-5">
+        <h3 class="card-title align-tags-start flex-column">
+            <span class="card-label fw-bolder fs-3 mb-1">Címkék</span>
+            <span class="text-muted mt-1 fw-bold fs-7">Találat: {{ countTag }} db</span>
+        </h3>
+        <div class="card-toolbar">
+            <!-- begin::Menu -->
+            <div class="d-flex align-tags-center position-relative me-4">
+      <span
+              
+              class="svg-icon svg-icon-3 position-absolute ms-3"
+      ></span>
+            </div>
+            <a class="btn btn-primary btn-sm cursor-pointer me-4" href="./dictionary/detail/new"> Új címke </a>
+            <button
+                    type="button"
+                    class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary"
+                    data-kt-menu-trigger="click"
+                    data-kt-menu-placement="bottom-end"
+                    data-kt-menu-flip="top-end"
+            >
+  <span
+          
+          class="svg-icon svg-icon-2"
+  ></span>
+            </button>
+
+            <!-- begin::Menu 2 -->
+            <app-dropdown-menu2></app-dropdown-menu2>
+            <!-- end::Menu 2 -->
+            <!-- end::Menu -->
+        </div>
+    </div>
+    <!-- end::Header -->
+    <!-- begin::Body -->
+        <div class="card-body py-3">
+            <p-table 
+            [responsive]="true" 
+            #dt 
+            [value]="listTag" 
+            dataKey="id" 
+            [lazy]="true"
+            (onLazyLoad)="nextPage($event)"
+            [columns]="cols"
+            [rows]="10" 
+            [first]="first"
+            [showCurrentPageReport]="true" 
+            [totalRecords]="totalRecords" 
+            [loading]="loading"
+            [paginator]="true" 
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [globalFilterFields]="['name', 'types', 'category']">
+
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th *ngFor="let col of columns">
+                        {{ col.header }}
+                    </th>
+                </tr>
+                <tr>
+                    <th *ngFor="let col of columns" [ngSwitch]="col.field">
+                        <input *ngSwitchCase="'name'" pInputText type="text" class="form-control"
+                            (input)="dt.filter($event.target.value, col.field, 'contains')" />
+                        
+                        <p-dropdown *ngSwitchCase="'tagCategoryId'" placeholder="Kategória" [showClear]="true" optionLabel="name" optionValue="id" [filter]="true"
+                         [options]="listTagCategory" 
+                        [style]="{'width':'100%'}" (onChange)="dt.filter($event.value, col.field, 'equals')">
+                        </p-dropdown>
+                        
+                        <p-dropdown *ngSwitchCase="'type'" placeholder="Típus" [showClear]="true" optionLabel="name" optionValue="value" [filter]="true"
+                         [options]="types" 
+                        [style]="{'width':'100%'}" (onChange)="dt.filter($event.value, col.field, 'equals')">
+                        </p-dropdown>
+
+                        <p-dropdown *ngSwitchCase="'isActive'" placeholder="Státusz" [showClear]="true" optionLabel="name" optionValue="value"
+                         [options]="listActive" 
+                        [style]="{'width':'100%'}" (onChange)="dt.filter($event.value, col.field, 'equals')">
+                        </p-dropdown>
+
+                        <p-dropdown *ngSwitchCase="'showFrontend'" placeholder="Frontenden megjelenik" [showClear]="true" optionLabel="name" optionValue="value"
+                         [options]="showFrontend" 
+                        [style]="{'width':'100%'}" (onChange)="dt.filter($event.value, col.field, 'equals')">
+                        </p-dropdown>
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-tag>
+                <tr>
+                    <td>
+                        <a [routerLink]="['/dictionary/detail/'+tag.id]" class="text-dark fw-bolder text-hover-primary fs-6">
+                            {{ tag.name }}
+                        </a>
+                    </td>
+                    <td>
+                        <span class="text-dark fw-bolder d-block fs-6">
+                            {{ tag.tagCategoryId | lbFetch:"tag-categories":"name" | async }}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="text-dark fw-bolder d-block mb-1 fs-6">
+                            {{ tag.type === 10 ? 'Minddiák' : 'Humáncentrum' }}
+                        </span>
+                        <span class="text-muted fw-bold text-muted d-block fs-7">Code: {{ tag.type === 10 ? 'MD' : 'HC' }}</span>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <button
+                        (click)="edit(tag.id)"
+                                class="
+                btn btn-icon btn-bg-light btn-active-color-primary btn-sm
+                me-1
+              "
+                        >
+              <span [inlineSVG]="'./assets/media/icons/duotune/art/art005.svg'"
+              class="svg-icon svg-icon-3"
+
+              ></span>
+                    </button>
+                        <a (click)="delete(tag.id)"
+                        class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm">
+              <span
+                      [inlineSVG]="'./assets/media/icons/duotune/general/gen027.svg'"
+                      class="svg-icon svg-icon-3"
+              ></span>
+                    </a>
+                    </td>
+                </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="5">Nincs találat.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>  
+        <!-- begin::Table container -->
+        
+        <!-- end::Table container -->
+    </div>
+    <!-- begin::Body -->
+

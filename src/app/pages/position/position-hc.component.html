@@ -1,0 +1,716 @@
+
+<ng-container *ngIf="!(loadingSubject$ | async); else loadingTpl">
+    
+    <div class="card mb-5 mb-xl-10">
+        <div
+                class="card-header border-0"
+        >
+            <h3 class="card-title align-items-start flex-column">
+                <!-- <span class="card-label fw-bolder fs-3 mb-1">Alkalmi</span> -->
+                <!-- <span class="card-label fw-bolder fs-3 mb-1" *ngFor="let listTagName of listTag">{{ listTagName.tagCategoryId }}</span> -->
+                <span class="text-muted mt-1 fw-bold fs-7 pb-5">{{ !isNew ? 'Szerkesztés' : 'Új hozzáadása' }}</span>
+            Általános adatok
+            </h3>
+        </div>
+        
+        <div id="kt_account_profile_details" class="collapse show">
+                <form novalidate="novalidate" class="form" [formGroup]="positionForm">
+                    <div class="card-body border-top p-9">
+                        <div class="row mb-6">
+                            <label class="col-lg-4 col-form-label required fw-bold fs-6">Pozíció elnevezése</label>
+                            <div class="col-lg-8 fv-row">
+                                <input
+                                        type="text"
+                                        class="form-control form-control-lg form-control-solid"
+                                        name="name"
+                                        formControlName="name"
+                                        autocomplete="off"
+                                        [ngClass]="{
+                                            'is-invalid': positionForm.controls['name'].invalid,
+                                            'is-valid': positionForm.controls['name'].valid
+                                        }"
+                                />
+    
+                                <ng-container class="fv-help-block" class="fv-help-block"
+                                [ngTemplateOutlet]="formError"
+                                [ngTemplateOutletContext]="{
+                                    validation: 'required',
+                                    message: 'Megnevezés kötelező',
+                                    control: positionForm.controls['name']
+                                }"
+                                ></ng-container>
+                                <!-- <div class="fv-plugins-message-container d-none">
+                                    <div class="fv-help-block">A név kötelező</div>
+                                </div> -->
+                            </div>
+                        </div>
+
+                        <div class="row mb-6">
+                            <label class="col-lg-4 col-form-label fw-bold fs-6"
+                            ><span class="required">Szolgáltatás</span></label
+                            >
+                            <div class="col-lg-8 fv-row">
+                                <!-- <select
+                                    class="form-select form-select-solid form-select-lg fw-bold"
+                                    name="serviceId"
+                                    formControlName="serviceId"
+                                    autocomplete="off"
+                                    required="required"
+                                    [ngClass]="{
+                                        'is-invalid': positionForm.controls['serviceId'].invalid,
+                                        'is-valid': positionForm.controls['serviceId'].valid
+                                    }"
+                                >
+                                    <option *ngFor="let type of offices" 
+                                            [ngValue]="type.id" 
+                                            [selected]="type.id == this.positionForm.controls['type'].value">
+                                            {{ type.name }}
+                                    </option>
+                                </select> -->
+                            </div>
+                        </div>
+                        <div class="row mb-6">
+                            <label class="col-lg-4 col-form-label fw-bold fs-6"
+                            ><span class="required">Iroda</span></label
+                            >
+                            <div class="col-lg-8 fv-row">
+                                <select
+                                    class="form-select form-select-solid form-select-lg fw-bold"
+                                    name="officeId"
+                                    formControlName="officeId"
+                                    autocomplete="off"
+                                    required="required"
+                                    [ngClass]="{
+                                        'is-invalid': positionForm.controls['officeId'].invalid,
+                                        'is-valid': positionForm.controls['officeId'].valid
+                                    }"
+                                >
+                                    <option *ngFor="let type of officeId" 
+                                            [ngValue]="type.id" 
+                                            [selected]="type.id == this.positionForm.controls['type'].value">
+                                            {{ type.name }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-6">
+                            <label class="col-lg-4 col-form-label fw-bold fs-6"
+                            ><span class="required">Pozíció gazda</span></label
+                            >
+                            <div class="col-lg-8 fv-row">
+                                <select
+                                    class="form-select form-select-solid form-select-lg fw-bold"
+                                    name="ownerUserId"
+                                    formControlName="ownerUserId"
+                                    autocomplete="off"
+                                    required="required"
+                                    [ngClass]="{
+                                        'is-invalid': positionForm.controls['ownerUserId'].invalid,
+                                        'is-valid': positionForm.controls['ownerUserId'].valid
+                                    }"
+                                >
+                                    <option *ngFor="let type of ownerUserId" 
+                                            [ngValue]="type.id" 
+                                            [selected]="type.id == this.positionForm.controls['type'].value">
+                                            {{ type.name }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-6">
+                            <label class="col-lg-4 col-form-label fw-bold fs-6"
+                            ><span class="required">Cég</span></label
+                            >
+                            <div class="col-lg-8 fv-row">
+                                <select
+                                    class="form-select form-select-solid form-select-lg fw-bold"
+                                    name="companyId"
+                                    formControlName="companyId"
+                                    autocomplete="off"
+                                    required="required"
+                                    [ngClass]="{
+                                        'is-invalid': positionForm.controls['companyId'].invalid,
+                                        'is-valid': positionForm.controls['companyId'].valid
+                                    }"
+                                >
+                                    <option *ngFor="let type of companyId" 
+                                            [ngValue]="type.id" 
+                                            [selected]="type.id == this.positionForm.controls['type'].value">
+                                            {{ type.name }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-0">
+                            <label class="col-lg-4 col-form-label fw-bold fs-6"
+                            >Egyszerűsített jelentkezés</label
+                            >
+                            <div class="col-lg-8 d-flex align-items-center">
+                                <div class="form-check form-check-solid form-switch fv-row">
+                                    <input
+                                            class="form-check-input w-45px h-30px"
+                                            type="checkbox" 
+                                            formControlName="simpleApplicationAllowed"
+                                            [checked]="this.positionForm.controls['simpleApplicationAllowed'].value"
+                                            id="simpleApplicationAllowed"
+                                    /><label class="form-check-label"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header border-0 p-0">
+                                <h1 class="card-title align-items-start flex-column">
+                                    <!-- <span class="card-label fw-bolder fs-3 mb-1">Alkalmi</span> -->
+                                    <!-- <span class="card-label fw-bolder fs-3 mb-1" *ngFor="let listTagName of listTag">{{ listTagName.tagCategoryId }}</span> -->
+                                    Munkavégzés helye
+                                </h1>
+                            </div>
+                            <div class="card-body border-top p-0">
+                                        <div class="row mb-6 pt-6">
+                                            <label class="col-lg-4 col-form-label fw-bold fs-6" required
+                                            >Ország</label
+                                            >
+                                            <div class="col-lg-8 fv-row">
+                                            <select
+                                                class="form-select form-select-solid form-select-lg fw-bold"
+                                                name="countyId"
+                                                formControlName="countyId"
+                                                autocomplete="off"
+                                                [ngClass]="{
+                                                    'is-invalid': positionForm.controls['countyId'].invalid,
+                                                    'is-valid': positionForm.controls['countyId'].valid
+                                                }"
+                                            >
+                                                <option *ngFor="let type of countyId" 
+                                                        [ngValue]="type.id" 
+                                                        [selected]="type.id == this.positionForm.controls['type'].value">
+                                                        {{ type.name }}
+                                                </option>
+                                            </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-6">
+                                            <label class="col-lg-4 col-form-label fw-bold fs-6">Irányítószám</label>
+                                            <div class="col-lg-8 fv-row">
+                                            <input type="text" 
+                                                class="form-control form-control-lg form-control-solid"
+                                                placeholder="1111"
+                                                name="zip"
+                                                formControlName="zip"
+                                                autocomplete="off"
+                                            />
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-6">
+                                            <label class="col-lg-4 col-form-label fw-bold fs-6" required>Település</label>
+                                            <div class="col-lg-8 fv-row">
+                                            <input type="text" 
+                                                class="form-control form-control-lg form-control-solid"
+                                                name="zip"
+                                                required="required"
+                                                formControlName="zip"
+                                                autocomplete="off"
+                                            />
+                                            </div>
+                                        </div>
+                                    
+                                </div>
+                        </div>
+
+                    <div class="card">
+                        <div class="card-header border-0 p-0">
+                            <h1 class="card-title align-items-start flex-column">
+                                <!-- <span class="card-label fw-bolder fs-3 mb-1">Alkalmi</span> -->
+                                <!-- <span class="card-label fw-bolder fs-3 mb-1" *ngFor="let listTagName of listTag">{{ listTagName.tagCategoryId }}</span> -->
+                                Pozíció részletei
+                            </h1>
+                        </div>
+
+                        <div class="card-body border-top p-0">
+                                    <div class="row mb-6 pt-6">
+                                        <label class="col-lg-4 col-form-label fw-bold fs-6" required
+                                        >Rövid leírás</label
+                                        >
+                                        <div class="col-lg-8 fv-row">
+                                            <ckeditor name="shortDescription"
+                                            formControlName="shortDescription"
+                                            ></ckeditor>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-6">
+                                        <label class="col-lg-4 col-form-label fw-bold fs-6">Cégbemutató</label>
+                                        <div class="col-lg-8 fv-row">
+                                            <ckeditor name="companyDescription"
+                                            formControlName="companyDescription"
+                                            ></ckeditor>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-6">
+                                        <label class="col-lg-4 col-form-label fw-bold fs-6">Feladatok</label>
+                                        <div class="col-lg-8 fv-row">
+                                            <ckeditor name="description"
+                                            formControlName="description"
+                                            ></ckeditor>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row mb-6">
+                                        <label class="col-lg-4 col-form-label fw-bold fs-6">Elvárások</label>
+                                        <div class="col-lg-8 fv-row">
+                                            <ckeditor name="requirements"
+                                            formControlName="requirements"
+                                            ></ckeditor>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-6">
+                                        <label class="col-lg-4 col-form-label fw-bold fs-6">Előnyök</label>
+                                        <div class="col-lg-8 fv-row">
+                                            <ckeditor name="advantages"
+                                            formControlName="advantages"
+                                            ></ckeditor>
+                                        </div>
+                                    </div>
+                        </div>
+                        <div class="card-body border-top p-0">
+                            <div class="row mb-6 pt-5">
+                                <label class="col-lg-4 col-form-label fw-bold fs-6">Igényelt létszám</label>
+                                <div class="col-lg-8 fv-row">
+                                    <div class="input-group mb-3">
+                                        <input type="text" 
+                                            class="form-control form-control-lg form-control-solid"
+                                            placeholder="1111"
+                                            name="headcount"
+                                            formControlName="headcount"
+                                            aria-describedby="basic-addon1"
+                                            autocomplete="off"
+                                        />
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text border-0 pb-5" id="basic-addon1">fő</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <!-- <div class="row mb-6">
+                                <label class="col-lg-4 col-form-label fw-bold fs-6" required
+                                            >Ország</label>
+                            <select
+                                class="form-select form-select-solid form-select-lg fw-bold"
+                                name="sex"
+                                formControlName="sex"
+                                autocomplete="off"
+                                [ngClass]="{
+                                    'is-invalid': positionForm.controls['sex'].invalid,
+                                    'is-valid': positionForm.controls['sex'].valid
+                                }"
+                            >
+                                <option *ngFor="let type of sex" 
+                                        [ngValue]="type.id" 
+                                        [selected]="type.id == this.positionForm.controls['sex'].value">
+                                        {{ type.name }}
+                                </option>
+                            </select>
+                            </div> -->
+                            <div class="row mb-6">
+                                <label class="col-lg-4 col-form-label fw-bold fs-6" required>Minimum életkor</label>
+                                <div class="col-lg-8 fv-row">
+                                <input type="text" 
+                                    class="form-control form-control-lg form-control-solid"
+                                    name="ageMin"
+                                    required="required"
+                                    formControlName="ageMin"
+                                    autocomplete="off"
+                                />
+                                </div>
+                            </div>
+                            <div class="row mb-6">
+                                <label class="col-lg-4 col-form-label fw-bold fs-6" required>Maximum életkor</label>
+                                <div class="col-lg-8 fv-row">
+                                <input type="text" 
+                                    class="form-control form-control-lg form-control-solid"
+                                    name="ageMax"
+                                    required="required"
+                                    formControlName="ageMax"
+                                    autocomplete="off"
+                                />
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header border-0 p-0">
+                            <h1 class="card-title align-items-start flex-column">
+                                Jövedelem
+                            </h1>
+                        </div>
+
+                        <div class="card-body border-top p-0">
+                            <div class="row mb-6 pt-6">
+                                <!-- <select
+                                    class="form-select form-select-solid form-select-lg fw-bold"
+                                    name="positionId"
+                                    formControlName="positionId"
+                                    autocomplete="off"
+                                    [ngClass]="{
+                                        'is-invalid': positionForm.controls['positionId'].invalid,
+                                        'is-valid': positionForm.controls['positionId'].valid
+                                    }"
+                                >
+                                    <option *ngFor="let type of positionId" 
+                                            [ngValue]="type.id" 
+                                            [selected]="type.id == this.positionForm.controls['positionId'].value">
+                                            {{ type.name }}
+                                    </option>
+                                </select> -->
+                                </div>
+                            <div class="row mb-6">
+                                <label class="col-lg-4 col-form-label fw-bold fs-6" required
+                                >Bértípus</label
+                                >
+                                
+                                    <div class="col-lg-8 fv-row">
+                                        <!-- <select
+                                            class="form-select form-select-solid form-select-lg fw-bold"
+                                            name="salaryType"
+                                            formControlName="salaryType"
+                                            autocomplete="off"
+                                            required="required"
+                                            [ngClass]="{
+                                                'is-invalid': positionForm.controls['salaryType'].invalid,
+                                                'is-valid': positionForm.controls['salaryType'].valid
+                                            }"
+                                        >
+                                            <option *ngFor="let type of officeId" 
+                                                    [ngValue]="type.id" 
+                                                    [selected]="type.id == this.positionForm.controls['salaryType'].value">
+                                                    {{ type.name }}
+                                            </option>
+                                        </select> -->
+                                    </div>
+                            </div>
+
+                            <div class="row mb-6">
+                                <label class="col-lg-4 col-form-label fw-bold fs-6">Bruttó alapbér alsó határ</label>
+                                <div class="col-lg-8 fv-row">
+                                    <div class="input-group mb-3">
+                                        <input type="text" 
+                                            class="form-control form-control-lg form-control-solid"
+                                            name="salaryMin"
+                                            formControlName="salaryMin"
+                                            aria-describedby="basic-addon1"
+                                            autocomplete="off"
+                                        />
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text border-0 pb-5" id="basic-addon1">Ft</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-6">
+                                <label class="col-lg-4 col-form-label fw-bold fs-6">Bruttó alapbér felső határ</label>
+                                <div class="col-lg-8 fv-row">
+                                    <div class="input-group mb-3">
+                                        <input type="text" 
+                                            class="form-control form-control-lg form-control-solid"
+                                            name="salaryMax"
+                                            formControlName="salaryMax"
+                                            aria-describedby="basic-addon1"
+                                            autocomplete="off"
+                                        />
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text border-0 pb-5" id="basic-addon1">Ft</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-6">
+                                <label class="col-lg-4 col-form-label fw-bold fs-6">Teljesítménybér százalék</label>
+                                <div class="col-lg-8 fv-row">
+                                    <div class="input-group mb-3">
+                                        <input type="text" 
+                                            class="form-control form-control-lg form-control-solid"
+                                            name="performanceSalaryPercent"
+                                            formControlName="performanceSalaryPercent"
+                                            aria-describedby="basic-addon1"
+                                            autocomplete="off"
+                                        />
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text border-0 pb-5" id="basic-addon1">%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-6">
+                                <label class="col-lg-4 col-form-label fw-bold fs-6">Teljesítménybér összeg</label>
+                                <div class="col-lg-8 fv-row">
+                                    <div class="input-group mb-3">
+                                        <input type="text" 
+                                            class="form-control form-control-lg form-control-solid"
+                                            name="salary"
+                                            formControlName="salary"
+                                            aria-describedby="basic-addon1"
+                                            autocomplete="off"
+                                        />
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text border-0 pb-5" id="basic-addon1">Ft</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-header border-0 p-0">
+                            <h1 class="card-title align-items-start flex-column">
+                                Szükséges nyelvismeret
+                            </h1>
+                        </div>
+                        <div class="card-body border-top p-0">
+                            <div class="row mb-6">
+                                <label class="col-lg-4 col-form-label fw-bold fs-6 required">Nyelv</label>
+                                <div class="col-lg-8 fv-row">
+                                    <div class="input-group mb-3">
+                                        <!-- Nyelv select -->
+                                    
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-6">
+                                <label class="col-lg-4 col-form-label fw-bold fs-6">Szóban</label>
+                                <div class="col-lg-8 fv-row">
+                                    <div class="input-group mb-3">
+                                        <!-- Szóban select -->
+                                        
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-6">
+                                <label class="col-lg-4 col-form-label fw-bold fs-6">Írásban</label>
+                                <div class="col-lg-8 fv-row">
+                                    <div class="input-group mb-3">
+                                        <!-- Írásban select -->
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Nyelvismeret törlés gomb -->
+                            <!-- Nyelvismeret hozzáadása gomb -->
+                        </div>
+
+                        <div class="card-header border-0 p-0">
+                            <h1 class="card-title align-items-start flex-column">
+                                Szükséges végzettségek
+                            </h1>
+                        </div>
+                        <div class="card-body border-top p-0">
+                            <div class="row mb-6">
+                                <label class="col-lg-4 col-form-label fw-bold fs-6 required">Végzettség</label>
+                                <div class="col-lg-8 fv-row">
+                                    <div class="input-group mb-3">
+                                        <!-- Végzettség select -->
+                                        <!-- Végzettség hozzáadása gomb -->
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                        <div class="card-header border-0 p-0">
+                            <h1 class="card-title align-items-start flex-column">
+                                Szükséges számítógépes ismeretek
+                            </h1>
+                        </div>
+                        <div class="card-body border-top p-0">
+                            <div class="row mb-6">
+                                <label class="col-lg-4 col-form-label fw-bold fs-6 required">Számítógépes ismeret kategória</label>
+                                <div class="col-lg-8 fv-row">
+                                    <div class="input-group mb-3">
+                                        <!-- számítógépes ismeret kategoria select -->
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-6">
+                                <label class="col-lg-4 col-form-label fw-bold fs-6 required">Számítógépes ismeret</label>
+                                <div class="col-lg-8 fv-row">
+                                    <div class="input-group mb-3">
+                                        <!-- számítógépes ismeret select -->
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-6">
+                                <label class="col-lg-4 col-form-label fw-bold fs-6 required">Tudásszint</label>
+                                <div class="col-lg-8 fv-row">
+                                    <div class="input-group mb-3">
+                                        <!-- Tudásszint select -->
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- számítógépes ismeretek törlés gomb -->
+                            <!-- számítógépes ismeretek hozzáadása gomb -->
+                            <div class="row mb-6">
+                                <label class="col-lg-4 col-form-label fw-bold fs-6 required">Jogosítvány kategóriák</label>
+                                <div class="col-lg-8 fv-row">
+                                    <div class="input-group mb-3">
+                                        <div class="d-flex">
+                                            <label
+                                                class="form-check form-check-sm form-check-custom form-check-solid me-5"
+                                                >
+                                                <input class="form-check-input" type="checkbox" value="1" />
+                                                <span class="form-check-label">AK</span>
+                                            </label>
+                                            <label
+                                                class="form-check form-check-sm form-check-custom form-check-solid me-5"
+                                                >
+                                                <input class="form-check-input" type="checkbox" value="1" />
+                                                <span class="form-check-label">A1</span>
+                                            </label>
+                                            <label
+                                                class="form-check form-check-sm form-check-custom form-check-solid me-5"
+                                                >
+                                                <input class="form-check-input" type="checkbox" value="1" />
+                                                <span class="form-check-label">A</span>
+                                            </label>
+                                            <label
+                                                class="form-check form-check-sm form-check-custom form-check-solid me-5"
+                                                >
+                                                <input class="form-check-input" type="checkbox" value="1" />
+                                                <span class="form-check-label">B</span>
+                                            </label>
+                                            <label
+                                                class="form-check form-check-sm form-check-custom form-check-solid me-5"
+                                            >
+                                                <input class="form-check-input" type="checkbox" value="1" />
+                                                <span class="form-check-label">C</span>
+                                            </label>
+                                            <label
+                                            class="form-check form-check-sm form-check-custom form-check-solid me-5"
+                                            >
+                                            <input class="form-check-input" type="checkbox" value="1" />
+                                            <span class="form-check-label">C1</span>
+                                            </label>
+                                            <label
+                                            class="form-check form-check-sm form-check-custom form-check-solid me-5"
+                                        >
+                                                <input class="form-check-input" type="checkbox" value="1" />
+                                                <span class="form-check-label">D</span>
+                                            </label>
+                                            <label
+                                            class="form-check form-check-sm form-check-custom form-check-solid me-5"
+                                            >
+                                            <input class="form-check-input" type="checkbox" value="1" />
+                                            <span class="form-check-label">E</span>
+                                            </label>
+                                            <label
+                                                class="form-check form-check-sm form-check-custom form-check-solid me-5"
+                                            >
+                                                <input class="form-check-input" type="checkbox" value="1" />
+                                                <span class="form-check-label">K</span>
+                                            </label>
+                                            <label
+                                                class="form-check form-check-sm form-check-custom form-check-solid me-5"
+                                            >
+                                                <input class="form-check-input" type="checkbox" value="1" />
+                                                <span class="form-check-label">T</span>
+                                            </label>
+                                            <label
+                                                class="form-check form-check-sm form-check-custom form-check-solid me-5"
+                                            >
+                                                <input class="form-check-input" type="checkbox" value="1" />
+                                                <span class="form-check-label">M</span>
+                                            </label>
+                                            <label
+                                                class="form-check form-check-sm form-check-custom form-check-solid me-5"
+                                            >
+                                                <input class="form-check-input" type="checkbox" value="1" />
+                                                <span class="form-check-label">TR</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-header border-0 p-0">
+                                <h1 class="card-title align-items-start flex-column">
+                                    Címkék
+                                </h1>
+                            </div>
+                            <div class="card-body border-top p-0">
+                                <div class="row mb-6">
+                                    <label class="col-lg-4 col-form-label fw-bold fs-6 required">Címke</label>
+                                    <div class="col-lg-8 fv-row">
+                                        <div class="input-group mb-3">
+                                            <!-- Címke select -->
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    </div>
+                    <div class="card-footer d-flex justify-content-end py-6 px-9">
+                        <div class="alert alert-danger" *ngIf="error">
+                            <h3>Hiba történt a mentés során!</h3>
+                            <p [innerHTML]="errorMsg"></p>
+                        </div>
+                        <button (click)="reset()"
+                                type="button"
+                                class="btn explore-btn-secondary me-5"
+                        >
+                            Mégsem
+                        </button>
+                        <button
+                                type="button"
+                                class="btn btn-primary"
+                                [disabled]="!positionForm.valid"
+                                (click)="saveSettings()"
+                        >
+                            <ng-container *ngIf="!isLoading">Mentés</ng-container>
+                            <ng-container *ngIf="isLoading">
+                    <span clas="indicator-progress" [style.display]="'block'">
+                      Kérem várj...{{ " " }}
+                      <span
+                              class="spinner-border spinner-border-sm align-middle ms-2"
+                      ></span>
+                    </span>
+                            </ng-container>
+                        </button>
+                    </div>
+                </form>
+                <ng-template
+                    #formError
+                    let-control="control"
+                    let-message="message"
+                    let-validation="validation"
+                    >
+                    <ng-container
+                        *ngIf="control.hasError(validation) && (control.dirty || control.touched)"
+                    >
+                        <div class="fv-plugins-message-container">
+                        <span role="alert">
+                            {{ message }}
+                        </span>
+                        </div>
+                    </ng-container>
+                </ng-template>
+            </div>
+    </div>
+    
+    </ng-container>
+    
+    <ng-template #loadingTpl>
+        <h4>Betöltés...</h4>
+        <span
+            class="spinner-border spinner-border-sm align-middle ms-2"
+        ></span>
+    </ng-template>

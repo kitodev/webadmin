@@ -1,0 +1,111 @@
+<div class="card mb-5 mb-xl-8" *ngIf="isLoading">
+    <!-- begin::Header -->
+    <div class="card-header border-0 pt-5">
+        <h3 class="card-title align-tags-start flex-column">
+            <span class="card-label fw-bolder fs-3 mb-1">HC hírlevélre feliratkozottak</span>
+            <span class="text-muted mt-1 fw-bold fs-7">Találat: 225</span>
+        </h3>
+        <div class="card-toolbar">
+            <!-- begin::Menu -->
+            <div class="d-flex align-tags-center position-relative me-4">
+      <span
+              
+              class="svg-icon svg-icon-3 position-absolute ms-3"
+      ></span>
+            </div>
+            <a class="btn btn-primary btn-sm cursor-pointer me-4" href="./email-subscriber/hc-subscriber/new"> Új hírlevél feliratkoztatás </a>
+            <button
+                    type="button"
+                    class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary"
+                    data-kt-menu-trigger="click"
+                    data-kt-menu-placement="bottom-end"
+                    data-kt-menu-flip="top-end"
+            >
+  <span
+          
+          class="svg-icon svg-icon-2"
+  ></span>
+            </button>
+
+            <!-- begin::Menu 2 -->
+            <app-dropdown-menu2></app-dropdown-menu2>
+            <!-- end::Menu 2 -->
+            <!-- end::Menu -->
+        </div>
+    </div>
+    <!-- end::Header -->
+    <!-- begin::Body -->
+    <div class="card-body py-3">
+        <!-- begin::Table container -->
+        <div class="table-responsive">
+            <!-- begin::Table -->
+            <p-table #dt 
+            [value]="listNewsletter" 
+            dataKey="id" 
+            [columns]="cols"
+            [rows]="10" 
+            [showCurrentPageReport]="true" 
+            [rowsPerPageOptions]="[10,25,50]" 
+            [loading]="loading"
+            [paginator]="true" 
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+    
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th *ngFor="let col of columns">
+                        {{ col.header }}
+                    </th>
+                </tr>
+                <tr>
+                    <th *ngFor="let col of columns" [ngSwitch]="col.field">
+                        <input *ngSwitchCase="'name'" placeholder="Megnevezés" pInputText type="text" class="form-control form-control-white w-150px"
+                            (input)="dt.filter($event.target.value, col.field, 'contains')" />
+                        
+                        <input *ngSwitchCase="'email'" placeholder="Céges e-mail cím" pInputText type="text" class="form-control form-control-white w-150px"
+                            (input)="dt.filter($event.target.value, col.field, 'contains')" />
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-subscriber>
+                <tr>
+                    <td>
+                        <span  class="text-dark fw-bolder fs-6">
+                            {{ subscriber.name }}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="text-dark fw-bolder fs-6">
+                            {{ subscriber.email }}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="text-dark fw-bolder fs-6">
+                            {{ subscriber.createTime | date: "yyyy-MM-dd h:mm:ss" }}
+                        </span>
+                    </td>
+                    
+                    <td></td>
+                    <td>
+                        <a (click)="delete(subscriber.id)"
+                        class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm">
+              <span
+                      [inlineSVG]="'./assets/media/icons/duotune/general/gen027.svg'"
+                      class="svg-icon svg-icon-3"
+              ></span>
+                    </a>
+                    </td>
+                </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="5">Nincs találat.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            
+            <!-- end::Table -->
+        </div>
+        <!-- end::Table container -->
+    </div>
+    <!-- begin::Body -->
+</div>

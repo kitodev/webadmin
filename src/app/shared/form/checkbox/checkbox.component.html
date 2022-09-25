@@ -1,0 +1,8 @@
+<ng-container>
+    <ng-container [formGroup]="formGroup">
+        <input type="checkbox" [formControlName]="name" />
+    </ng-container>
+    <div class="fv-plugins-message-container d-none" *ngIf="control.invalid && (control?.dirty || control?.touched)">
+        <div class="fv-help-block">{{ required }}</div>
+    </div> 
+</ng-container>

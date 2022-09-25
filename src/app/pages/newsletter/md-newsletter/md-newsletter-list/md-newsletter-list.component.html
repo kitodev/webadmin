@@ -1,0 +1,119 @@
+<div class="card mb-5 mb-xl-8" *ngIf="isLoading">
+    <!-- begin::Header -->
+    <div class="card-header border-0 pt-5">
+        <h3 class="card-title align-tags-start flex-column">
+            <span class="card-label fw-bolder fs-3 mb-1">MD hírlevélre feliratkozottak</span>
+            <span class="text-muted mt-1 fw-bold fs-7">Találat: 225</span>
+        </h3>
+        <div class="card-toolbar">
+            <!-- begin::Menu -->
+            <div class="d-flex align-tags-center position-relative me-4">
+      <span
+              
+              class="svg-icon svg-icon-3 position-absolute ms-3"
+      ></span>
+                <input
+                        type="text"
+                        id="kt_filter_search0"
+                        class="form-control form-control-white form-control-sm w-150px ps-9"
+                        placeholder="Search"
+                />
+            </div>
+            <a class="btn btn-primary btn-sm cursor-pointer me-4" href="./email-newsletter/hc-newsletter/new"> Új hírlevél feliratkoztatás </a>
+            <button
+                    type="button"
+                    class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary"
+                    data-kt-menu-trigger="click"
+                    data-kt-menu-placement="bottom-end"
+                    data-kt-menu-flip="top-end"
+            >
+  <span
+          
+          class="svg-icon svg-icon-2"
+  ></span>
+            </button>
+
+            <!-- begin::Menu 2 -->
+            <app-dropdown-menu2></app-dropdown-menu2>
+            <!-- end::Menu 2 -->
+            <!-- end::Menu -->
+        </div>
+    </div>
+    <!-- end::Header -->
+    <!-- begin::Body -->
+    <div class="card-body py-3">
+        <!-- begin::Table container -->
+        <div class="table-responsive">
+            <!-- begin::Table -->
+            <table
+                    class="table table-row-bordered table-row-gray-100 align-middle gs-0 gy-3"
+            >
+                <!-- begin::Table head -->
+                <thead>
+                <tr class="fw-bolder text-muted">
+                    <th class="min-w-140px">Név</th>
+                    <th class="min-w-140px">E-mail cím</th>
+                    <th class="min-w-140px">Küldési gyakoriság</th>
+                    <th class="min-w-140px">Létrehozás ideje</th>
+                    <th class="min-w-140px">Módosítás ideje</th>
+                    <th class="min-w-100px text-end">Műveletek</th>
+                </tr>
+                </thead>
+                <!-- end::Table head -->
+                <!-- begin::Table body -->
+                <tbody>
+                <tr *ngFor="let newsletter of listNewsletter | slice: (page-1) * PAGE_SIZE : page * PAGE_SIZE">
+                    <td>
+                        <span  class="text-dark fw-bolder fs-6">
+                            {{ newsletter.name }}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="text-dark fw-bolder fs-6">
+                            {{ newsletter.email }}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="text-dark fw-bolder d-block mb-1 fs-6">
+                            {{ newsletter.frequency === 10 ? 'azonnali' : 'heti' }}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="text-dark fw-bolder fs-6">
+                            {{ newsletter.createTime | date: "yyyy-MM-dd h:mm:ss" }}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="text-dark fw-bolder fs-6">
+                            {{ newsletter.updateTime | date: "yyyy-MM-dd h:mm:ss" }}
+                        </span>
+                    </td>
+                    <td class="text-end">
+                        <a (click)="delete(newsletter.id)"
+                        class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm">
+              <span
+                      [inlineSVG]="'./assets/media/icons/duotune/general/gen027.svg'"
+                      class="svg-icon svg-icon-3"
+              ></span>
+                    </a>
+                    </td>
+                </tr>
+                </tbody>
+                <!-- end::Table body-->
+            </table>
+            <div class="card-footer">
+                <div class="d-flex flex-stack flex-wrap pt-10">
+                    <ngb-pagination [collectionSize]="listNewsletter.length" [(page)]="page" #numPage [maxSize]="5" [boundaryLinks]="true"
+                    [pageSize]="PAGE_SIZE" class="d-flex justify-content-center"></ngb-pagination>              
+                    <div class="fs-6 fw-bold text-gray-700">
+                        Showing 1 to {{ numPage.pageCount }} of {{ listNewsletter.length }} entries
+                    </div>
+                </div>
+            </div>
+            
+            <!-- end::Table -->
+        </div>
+        <!-- end::Table container -->
+    </div>
+    <!-- begin::Body -->
+</div>

@@ -1,0 +1,256 @@
+
+<ng-container *ngIf="!(loadingSubject$ | async); else loadingTpl">
+    
+    <div class="card mb-5 mb-xl-10">
+        <div
+                class="card-header border-0"
+        >
+            <h3 class="card-title align-items-start flex-column">
+                <!-- <span class="card-label fw-bolder fs-3 mb-1">Alkalmi</span> -->
+                <!-- <span class="card-label fw-bolder fs-3 mb-1" *ngFor="let listTagName of listTag">{{ listTagName.tagCategoryId }}</span> -->
+                <span class="text-muted mt-1 fw-bold fs-7">{{ !isNew ? 'Szerkesztés' : 'Új hozzáadása' }}</span>
+            </h3>
+        </div>
+        <div id="kt_account_profile_details" class="collapse show">
+    
+                <form novalidate="novalidate" class="form" [formGroup]="officeForm">
+                    <div class="card-body border-top p-9">
+                        <div class="row mb-6">
+                            <label class="form-check form-check-inline form-check-solid me-5"
+                                ><input
+                                    class="form-check-input"
+                                    type="checkbox" 
+                                    formControlName="isActive"
+                                    [checked]="this.officeForm.controls['isActive'].value"
+                                    id="isActive"
+                                /><span class="fw-bold ps-2 fs-6">Aktív</span></label>
+                        </div>
+                        <div class="row mb-6">
+                            <label class="form-check form-check-inline form-check-solid me-5"
+                                ><input
+                                    class="form-check-input"
+                                    type="checkbox" 
+                                    formControlName="isHc"
+                                    [checked]="this.officeForm.controls['isHc'].value"
+                                    id="isHc"
+                                /><span class="fw-bold ps-2 fs-6">HC iroda</span></label>
+                        </div>
+                        <div class="row mb-6">
+                            <label class="form-check form-check-inline form-check-solid me-5"
+                                ><input
+                                    class="form-check-input"
+                                    type="checkbox" 
+                                    formControlName="isMd"
+                                    [checked]="this.officeForm.controls['isMd'].value"
+                                    id="isMd"
+                                /><span class="fw-bold ps-2 fs-6">MD iroda</span></label>
+                            </div>
+                        <div class="row mb-6">
+                            <label class="col-lg-4 col-form-label required fw-bold fs-6">Megnevezés</label>
+                            <div class="col-lg-8 fv-row">
+                                <input
+                                        type="text"
+                                        class="form-control form-control-lg form-control-solid"
+                                        placeholder="Megnevezés"
+                                        name="name"
+                                        formControlName="name"
+                                        autocomplete="off"
+                                        [ngClass]="{
+                                            'is-invalid': officeForm.controls['name'].invalid,
+                                            'is-valid': officeForm.controls['name'].valid
+                                        }"
+                                />
+    
+                                <ng-container class="fv-help-block" class="fv-help-block"
+                                [ngTemplateOutlet]="formError"
+                                [ngTemplateOutletContext]="{
+                                    validation: 'required',
+                                    message: 'Megnevezés kötelező',
+                                    control: officeForm.controls['name']
+                                }"
+                                ></ng-container>
+                                <!-- <div class="fv-plugins-message-container d-none">
+                                    <div class="fv-help-block">A név kötelező</div>
+                                </div> -->
+                            </div>
+                        </div>
+                         <div class="row mb-6">
+                            <label class="col-lg-4 col-form-label fw-bold fs-6">Slug</label>
+                            <div class="col-lg-8 fv-row">
+                                <input
+                                        type="text"
+                                        class="form-control form-control-lg form-control-solid"
+                                        placeholder="Slug"
+                                        name="slug"
+                                        formControlName="slug"
+                                        autocomplete="off"
+                                />
+                            </div>
+                        </div>
+
+                        <div class="row mb-6">
+                            <label class="col-lg-4 col-form-label fw-bold fs-6"
+                            ><span class="required">Típus</span></label
+                            >
+                            <div class="col-lg-8 fv-row">
+                                <select
+                                    class="form-select form-select-solid form-select-lg fw-bold"
+                                    name="type"
+                                    formControlName="type"
+                                    autocomplete="off"
+                                    required="required"
+                                    [ngClass]="{
+                                        'is-invalid': officeForm.controls['type'].invalid,
+                                        'is-valid': officeForm.controls['type'].valid
+                                    }"
+                                >
+                                    <option *ngFor="let type of offices" 
+                                            [ngValue]="type.id" 
+                                            [selected]="type.id == this.officeForm.controls['type'].value">
+                                            {{ type.name }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-6">
+                            <label class="col-lg-4 col-form-label fw-bold fs-6">Utca, házszám</label>
+                            <div class="col-lg-8 fv-row">
+                            <input type="text" 
+                                class="form-control form-control-lg form-control-solid"
+                                placeholder="Utca, házszám"
+                                name="address"
+                                formControlName="address"
+                                autocomplete="off"
+                            />
+                            </div>
+                        </div>
+                        <div class="row mb-6">
+                            <label class="col-lg-4 col-form-label fw-bold fs-6">Telefonszám</label>
+                            <div class="col-lg-8 fv-row">
+                            <input type="text" 
+                                class="form-control form-control-lg form-control-solid"
+                                placeholder="Telefonszám"
+                                name="phone"
+                                formControlName="phone"
+                                autocomplete="off"
+                            />
+                            </div>
+                        </div>
+                        <div class="row mb-6">
+                            <label class="col-lg-4 col-form-label fw-bold fs-6">HC e-mail cím</label>
+                            <div class="col-lg-8 fv-row">
+                            <input type="text" 
+                                class="form-control form-control-lg form-control-solid"
+                                placeholder="HC e-mail cím"
+                                name="emailHc"
+                                formControlName="emailHc"
+                                autocomplete="off"
+                            />
+                            </div>
+                        </div>
+                        <div class="row mb-6">
+                            <label class="col-lg-4 col-form-label fw-bold fs-6">MD e-mail cím</label>
+                            <div class="col-lg-8 fv-row">
+                            <input type="text" 
+                                class="form-control form-control-lg form-control-solid"
+                                placeholder="MD e-mail cím"
+                                name="emailMd"
+                                formControlName="emailMd"
+                                autocomplete="off"
+                            />
+                            </div>
+                        </div>
+                        <div class="row mb-6">
+                            <label class="col-lg-4 col-form-label fw-bold fs-6">Feladatok</label>
+                            <div class="col-lg-8 fv-row">
+                                <ckeditor name="description"
+                                formControlName="description"
+                                ></ckeditor>
+                            </div>
+                        </div>
+                        <div class="row mb-6">
+                            <label class="col-lg-4 col-form-label fw-bold fs-6">Nyitvatartási idő</label>
+                            <div class="col-lg-8 fv-row">
+                                <ckeditor name="openTime"
+                                formControlName="openTime"
+                                ></ckeditor>
+                            </div>
+                        </div>
+                        <div class="row mb-6">
+                            <label class="col-lg-4 col-form-label fw-bold fs-6">Értékesítők
+                            <span [inlineSVG]="'./assets/media/icons/duotune/general/gen046.svg'"
+                                class="svg-icon svg-icon-3" 
+                                ngbTooltip="Az irodához tartozó értékesítők közül a nevük előtt található jelölővel lehet az alapértelmezett értékesítőt kiválasztani. Az értékesítők nevére kattintva azok szerkesztési oldala nyílik meg."></span>
+                            </label>
+                            <div class="col-lg-8 fv-row">
+                                
+                            </div>
+                        </div>
+                        <div class="row mb-6">
+                            <label class="col-lg-4 col-form-label fw-bold fs-6">Projektvezetők
+                                <span [inlineSVG]="'./assets/media/icons/duotune/general/gen046.svg'"
+                                class="svg-icon svg-icon-3" 
+                                ngbTooltip="Az irodához tartozó projektvezetők közül a nevük előtt található jelölővel lehet az alapértelmezett projektvezetőt kiválasztani. A projektvezetők nevére kattintva azok szerkesztési oldala nyílik meg."></span>
+                            </label>
+                            
+                            <div class="col-lg-8 fv-row">
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer d-flex justify-content-end py-6 px-9">
+                        <div class="alert alert-danger" *ngIf="error">
+                            <h3>Hiba történt a mentés során!</h3>
+                            <p [innerHTML]="errorMsg"></p>
+                        </div>
+                        <button (click)="reset()"
+                                type="button"
+                                class="btn explore-btn-secondary me-5"
+                        >
+                            Mégsem
+                        </button>
+                        <button
+                                type="button"
+                                class="btn btn-primary"
+                                [disabled]="!officeForm.valid"
+                                (click)="saveSettings()"
+                        >
+                            <ng-container *ngIf="!isLoading">Mentés</ng-container>
+                            <ng-container *ngIf="isLoading">
+                    <span clas="indicator-progress" [style.display]="'block'">
+                      Kérem várj...{{ " " }}
+                      <span
+                              class="spinner-border spinner-border-sm align-middle ms-2"
+                      ></span>
+                    </span>
+                            </ng-container>
+                        </button>
+                    </div>
+                </form>
+                <ng-template
+                    #formError
+                    let-control="control"
+                    let-message="message"
+                    let-validation="validation"
+                    >
+                    <ng-container
+                        *ngIf="control.hasError(validation) && (control.dirty || control.touched)"
+                    >
+                        <div class="fv-plugins-message-container">
+                        <span role="alert">
+                            {{ message }}
+                        </span>
+                        </div>
+                    </ng-container>
+                </ng-template>
+            </div>
+    </div>
+    
+    </ng-container>
+    
+    <ng-template #loadingTpl>
+        <h4>Betöltés...</h4>
+        <span
+            class="spinner-border spinner-border-sm align-middle ms-2"
+        ></span>
+    </ng-template>

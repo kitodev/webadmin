@@ -1,0 +1,12 @@
+<div class="datetime-picker-container">
+<input clrInput
+         autocomplete="off"
+         (dateTimeChange)="onChange($event)"
+         [owlDateTimeTrigger]="picker"
+         [owlDateTime]="picker"
+         [selectMode]="mode"
+         [min]="min"
+         [max]="max"
+         [(ngModel)]="value">
+  <owl-date-time [pickerType]="type" [startAt]="startAt" #picker></owl-date-time>
+</div>

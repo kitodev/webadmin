@@ -1,0 +1,5 @@
+export const DATATABLE_SETTINGS = {
+    PAGE_SIZE: 10,
+    PAGE: 1,
+    SIZE_OPTIONS: [5, 10, 25, 50, 100, 150, 200, 250, 300, 350]
+}

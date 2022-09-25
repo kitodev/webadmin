@@ -1,0 +1,8 @@
+<ng-container>
+    <ng-container [formGroup]="formGroup">
+        <select [formControlName]="name">
+            <label [ngClass]="{'required': required}">{{ label }}</label>
+            <option *ngFor="let opt of optArray" [ngValue]="opt.value">{{ opt.label }}</option>
+        </select>
+    </ng-container>
+</ng-container>

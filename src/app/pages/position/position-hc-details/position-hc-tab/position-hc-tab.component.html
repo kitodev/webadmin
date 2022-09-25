@@ -1,0 +1,200 @@
+<div class="card card-custom">
+  <!-- begin::Header -->
+  <div class="card-header card-header-stretch overflow-auto">
+    <ul
+      class="
+        nav nav-stretch nav-line-tabs
+        fw-bold
+        border-transparent
+        flex-nowrap
+      "
+      role="tablist"
+    >
+      <li class="nav-item">
+        <a
+          class="nav-link cursor-pointer"
+          [ngClass]="{ active: activeTab === 'Jelentkező' }"
+          (click)="setActiveTab('Jelentkező')"
+          role="tab"
+        >
+          Jelentkező (0)
+        </a>
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link cursor-pointer"
+          [ngClass]="{ active: activeTab === 'Potenciális' }"
+          (click)="setActiveTab('Potenciális')"
+          role="tab"
+        >
+          Potenciális (0)
+        </a>
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link cursor-pointer"
+          [ngClass]="{ active: activeTab === 'Interjú' }"
+          (click)="setActiveTab('Interjú')"
+          role="tab"
+        >
+          Interjú (0)
+        </a>
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link cursor-pointer"
+          [ngClass]="{ active: activeTab === 'Bemutatott' }"
+          (click)="setActiveTab('Bemutatott')"
+          role="tab"
+        >
+          Bemutatott (0)
+        </a>
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link cursor-pointer"
+          [ngClass]="{ active: activeTab === 'Kiválasztott' }"
+          (click)="setActiveTab('Kiválasztott')"
+          role="tab"
+        >
+          Kiválasztott (0)
+        </a>
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link cursor-pointer"
+          [ngClass]="{ active: activeTab === 'Állományban' }"
+          (click)="setActiveTab('Állományban')"
+          role="tab"
+        >
+          Állományban (0)
+        </a>
+      </li>
+    </ul>
+  </div>
+  <!-- end::Header -->
+  <!-- begin::Form -->
+  <form class="form" novalidate #form="ngForm">
+    <!-- begin::Body -->
+    <div class="card-body">
+      <div class="tab-content pt-3">
+        <!-- begin::Header -->
+        <div class="tab-pane" [ngClass]="{ active: activeTab === 'Jelentkező' }">
+          <div class="row mb-12">
+            <div class="col-lg-8 col-xl-8">
+              <table class="table table-striped table-condensed table list-view">
+                <tbody><tr class="odd user-info" data-content="<table width='300'><tr>
+                      <td  style='vertical-align: top; width: 100px;' align='center'>
+                        <img src='/site/profilePic?user_id=446961&amp;w=80&amp;h=80' alt='' class='thumbnail'>
+                      </td>
+                      <td style='vertical-align: top; width: 150px; font-size: 11xp;'>- éves <br><br><br></td></tr></table>" data-original-title="user u446961">
+                
+                    <td>
+                            <a href="/userMd/446961" target="_blank">user u446961</a>
+                    </td>
+                
+                  <td>
+                    -      </td>
+                  <td>
+                    2022. május 6. 21:49 <br>
+                          webes jelentkezés      </td>
+                  </tr><tr class="even user-info" data-content="<table width='300'><tr>
+                      <td  style='vertical-align: top; width: 100px;' align='center'>
+                        <img src='/site/profilePic?user_id=457688&amp;w=80&amp;h=80' alt='' class='thumbnail'>
+                      </td>
+                      <td style='vertical-align: top; width: 150px; font-size: 11xp;'>22 éves <br><br><br></td></tr></table>" data-original-title="user u457688">
+                
+                    <td>
+                            <a href="/userMd/457688" target="_blank">user u457688</a>
+                    </td>
+                
+                  <td>
+                    22    N  </td>
+                  <td>
+                    2022. május 6. 15:35 <br>
+                          webes jelentkezés      </td>
+                  </tr><tr class="odd user-info" data-content="<table width='300'><tr>
+                      <td  style='vertical-align: top; width: 100px;' align='center'>
+                        <img src='/site/profilePic?user_id=414498&amp;w=80&amp;h=80' alt='' class='thumbnail'>
+                      </td>
+                      <td style='vertical-align: top; width: 150px; font-size: 11xp;'>23 éves <br>Budapest XXII.<br><br></td></tr></table>" data-original-title="user u414498&amp;nbsp;<i class=&quot;icon-comment&quot; rel=&quot;tooltip&quot; title=&quot;Telekom interjú 01.25&quot;></i>">
+                
+                    <td>
+                            <a href="/userMd/414498" target="_blank">user u414498&nbsp;<i class="icon-comment" rel="tooltip" data-original-title="Telekom interjú 01.25"></i></a>
+                    </td>
+                
+                  <td>
+                    23    N  </td>
+                  <td>
+                    2022. május 6. 15:34 <br>
+                          webes jelentkezés      </td>
+                  </tr></tbody></table>
+            </div>
+            <div class="col-lg-4 col-xl-4">
+              <div class="d-flex flex-wrap">
+                <div class="border border-gray-300 rounded min-w-125px py-3 px-4 me-6 mb-3"><div class="d-flex align-items-center justify-content-center">
+                  <span class="svg-icon svg-icon-3 svg-icon-success me-2" ng-reflect-inline-s-v-g="./assets/media/icons/duotune/a">
+                  </span><!--container--><div class="fs-2 fw-bolder">0</div></div><div class="fw-bold d-flex fs-6 text-gray-400 justify-content-center">Jelentkező</div>
+                </div>
+                <div class="border border-gray-300 rounded min-w-135px py-3 px-4 me-6 mb-3"><div class="d-flex align-items-center justify-content-center">
+                  <span class="svg-icon svg-icon-3 svg-icon-success me-2" ng-reflect-inline-s-v-g="./assets/media/icons/duotune/a">
+                  </span><!--container--><div class="fs-2 fw-bolder">0 / 1</div></div><div class="fw-bold d-flex fs-6 text-gray-400 justify-content-center">Betöltött</div>
+                </div>
+                <div class="border border-gray-300 rounded min-w-125px py-3 px-4 me-6 mb-3"><div class="d-flex align-items-center justify-content-center">
+                  <span class="svg-icon svg-icon-3 svg-icon-success me-2" ng-reflect-inline-s-v-g="./assets/media/icons/duotune/a">
+                  </span><!--container--><div class="fs-2 fw-bolder">0</div></div><div class="fw-bold d-flex fs-6 text-gray-400 justify-content-center">Parkolópályán</div>
+                </div>
+                <div class="border border-gray-300 rounded min-w-125px py-3 px-4 me-6 mb-3"><div class="d-flex align-items-center justify-content-center">
+                  <span class="svg-icon svg-icon-3 svg-icon-success me-2" ng-reflect-inline-s-v-g="./assets/media/icons/duotune/a">
+                  </span><!--container--><div class="fs-2 fw-bolder">0</div></div><div class="fw-bold d-flex fs-6 text-gray-400 justify-content-center">Visszautasított</div>
+                </div>
+              </div>
+              <select
+                      class="form-select form-select-solid form-select-lg fw-bold"
+                      name="type"
+                      formControlName="type"
+                      autocomplete="off"
+              >
+                  <option selected="selected">Nem visszautasitottak</option>
+                  <option>
+                  </option>
+              </select>
+              <button class="btn btn-primary">Export</button>
+            </div>
+          </div>
+        </div>
+        <!-- end::Header -->
+        <!-- begin::Header -->
+        <div class="tab-pane" [ngClass]="{ active: activeTab === 'Potenciális' }">
+          
+        </div>
+        <!-- end::Toolbar -->
+
+        <!-- begin::Page Title -->
+        <div class="tab-pane" [ngClass]="{ active: activeTab === 'Interjú' }">
+          
+        </div>
+        <!-- end::Page Title -->
+
+        <!-- begin::Content -->
+        <div class="tab-pane" [ngClass]="{ active: activeTab === 'Bemutatott' }">
+          
+        </div>
+        <!-- end::Content -->
+        <!-- begin::Content -->
+        <div class="tab-pane" [ngClass]="{ active: activeTab === 'Kiválasztott' }">
+          
+        </div>
+        <!-- end::Content -->
+        <!-- begin::Content -->
+        <div class="tab-pane" [ngClass]="{ active: activeTab === 'Állományban' }">
+          
+        </div>
+        <!-- end::Content -->
+      </div>
+    </div>
+    <!-- end::Body -->
+    <!-- end::Footer -->
+  </form>
+  <!-- end::Form -->
+</div>

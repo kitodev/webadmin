@@ -1,0 +1,864 @@
+
+<ng-container *ngIf="!(loadingSubject$ | async); else loadingTpl">
+    
+<ng-container *ngFor="let position of listPosition; let i=index">
+  <div class="card mb-10">
+    <div class="card-body d-flex align-items-center py-8">
+      <!-- begin::Description  -->
+      <div class="ms-6">
+        <h3>{{ position.name }}</h3>
+        <h4>{{ position.companyId | lbFetch:"companies":"name" | async }}</h4>
+        <span  class="badge fw-bolder me-auto px-4 py-3"
+        [ngClass]="{'badge-light': position.status === 10,
+                   'badge-primary': position.status === 20,
+                   'badge-warning': position.status === 30,
+                   'badge-success': position.status === 40,
+                   'badge-dark': position.status === 50,
+                   'badge-dark': position.status === 60
+                   }">
+           {{ (position.status === 10) ? 'szerkesztett' 
+               : (position.status === 20) ? 'rögzített'
+               : (position.status === 30) ? 'jóváhagyott'
+               : (position.status === 40) ? 'megvalósult'
+               : (position.status === 50) ? 'lezárult'
+               : (position.status === 60) ?'törölt' 
+               : '' 
+           }}
+       </span>
+       <span>{{ positon?.isPublished }}</span>
+       <span>{{ positon?.zip }}</span>
+      </div>
+      <!-- end::Description  -->
+    </div>
+  </div>
+
+  <div class="card card-custom">
+    <!-- begin::Header -->
+    <div class="card-header card-header-stretch overflow-auto">
+      <ul
+        class="
+          nav nav-stretch nav-line-tabs
+          fw-bold
+          border-transparent
+          flex-nowrap
+        "
+        role="tablist"
+      >
+        <li class="nav-item">
+          <a
+            class="nav-link cursor-pointer"
+            [ngClass]="{ active: activeTab === 'Pozíció' }"
+            (click)="setActiveTab('Pozíció')"
+            role="tab"
+          >
+          Pozíció
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link cursor-pointer"
+            [ngClass]="{ active: activeTab === 'Export' }"
+            (click)="setActiveTab('Export')"
+            role="tab"
+          >
+          Export
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link cursor-pointer"
+            [ngClass]="{ active: activeTab === 'Jelentkezők' }"
+            (click)="setActiveTab('Jelentkezők')"
+            role="tab"
+          >
+            Jelentkezők
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link cursor-pointer"
+            [ngClass]="{ active: activeTab === 'Interjúk' }"
+            (click)="setActiveTab('Interjúk')"
+            role="tab"
+          >
+            Interjúk
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link cursor-pointer"
+            [ngClass]="{ active: activeTab === 'Jogosultságok' }"
+            (click)="setActiveTab('Jogosultságok')"
+            role="tab"
+          >
+            Jogosultságok
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link cursor-pointer"
+            [ngClass]="{ active: activeTab === 'Üzenetek' }"
+            (click)="setActiveTab('Üzenetek')"
+            role="tab"
+          >
+            Üzenetek
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link cursor-pointer"
+            [ngClass]="{ active: activeTab === 'Napló' }"
+            (click)="setActiveTab('Napló')"
+            role="tab"
+          >
+          Napló
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link cursor-pointer"
+            [ngClass]="{ active: activeTab === 'Fájlok' }"
+            (click)="setActiveTab('Fájlok')"
+            role="tab"
+          >
+          Fájlok
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link cursor-pointer"
+            [ngClass]="{ active: activeTab === 'Projekt' }"
+            (click)="setActiveTab('Projekt')"
+            role="tab"
+          >
+          Projekt
+          </a>
+        </li>
+      </ul>
+    </div>
+    <!-- end::Header -->
+    <!-- begin::Form -->
+    <form class="form" novalidate #form="ngForm" (ngSubmit)="submitPreview()">
+      <!-- begin::Body -->
+      <div class="card-body">
+        <div class="tab-content pt-3">
+          <!-- begin::Header -->
+          <div class="tab-pane" [ngClass]="{ active: activeTab === 'Pozíció' }">
+            <div class="row mb-10">
+              <div class="col-lg-6 col-xl-4">
+                <div class="col-lg-4 col-xl-4 pb-5">
+              Státusz: <br>
+              <span  class="badge fw-bolder me-auto px-4 py-3"
+              [ngClass]="{'badge-light': position.status === 10,
+                         'badge-primary': position.status === 20,
+                         'badge-warning': position.status === 30,
+                         'badge-success': position.status === 40,
+                         'badge-dark': position.status === 50,
+                         'badge-dark': position.status === 60
+                         }">
+                 {{ (position.status === 10) ? 'szerkesztett' 
+                     : (position.status === 20) ? 'rögzített'
+                     : (position.status === 30) ? 'jóváhagyott'
+                     : (position.status === 40) ? 'megvalósult'
+                     : (position.status === 50) ? 'lezárult'
+                     : (position.status === 60) ?'törölt' 
+                     : '' 
+                 }}
+             </span>
+            </div>
+            <div class="col-lg-4 col-xl-4 pb-5">
+             Publikálva: <br>
+             <span  class="badge fw-bolder me-auto px-4 py-3"
+             [ngClass]="{'badge-success': position.isPublished === 1,
+                        'badge-warning': position.isPublished === 2
+                        }">
+                {{ (position.isPublished === 1) ? 'igen' 
+                    : (position.isPublished === 2) ? 'nem'
+                    : '' 
+                }}
+            </span>
+            <div class="col-lg-4 col-xl-4 pb-5 pt-5">
+            <a
+        class="
+          btn btn-sm btn-flex btn-light btn-active-primary
+          fw-bolder
+          cursor-pointer
+        "
+        data-kt-menu-trigger="click"
+        data-kt-menu-placement="bottom-end"
+        data-kt-menu-flip="top-end"
+      >
+      
+        Másolás
+      </a>
+      </div>
+      </div>
+
+          </div>
+          <div class="col-lg-6 col-xl-4">
+            <div class="table-responsive">
+            <table class="table table-striped table-condensed table">
+              <tbody><tr class="odd"><th>Létrehozta</th><td>{{ position.creatorUserId | lbFetch:"user":"name" | async }} </td></tr>
+                <tr class="even"><th>Pozíció gazda</th><td>{{ position.ownerUserId | lbFetch:"users":"name" | async }}</td></tr>
+                <tr class="odd"><th>Létrehozás ideje</th><td>{{ position.createTime | date: 'y-M-d hh:mm' }}</td></tr>
+                <tr class="even"><th>Módosítás ideje</th><td>{{ position.updateTime | date: 'y-M-d hh:mm' }}</td></tr>
+                <tr class="odd"><th>Megjelenés kezdete</th><td>{{ position.publishStart | date: 'y-M-d hh:mm'  }}</td></tr>
+                <tr class="even"><th>Megjelenés vége</th><td>{{ position.publishEnd | date: 'y-M-d hh:mm' }}</td></tr>
+                </tbody>
+            </table>
+            </div>
+          </div>
+      </div>
+  
+            <div class="row mb-10">
+              <div class="col-lg-6 col-xl-4">
+                <div class="table-responsive">
+                  <h4>Általános adatok</h4>
+                <table class="table table-striped table-condensed table">
+                  <tbody><tr class="odd"><th>Szolgáltatás típus</th><td>{{ position.serviceId | lbFetch:"positions":"name" | async }}</td></tr>
+                    <tr class="even"><th>Iroda / kirendeltség</th><td>{{ position.officeId | lbFetch:"offices":"name" | async }}</td></tr>
+                    <tr class="odd"><th>Cég</th><td>{{ position.companyId | lbFetch:"companies":"name" | async }}</td></tr>
+                    <tr class="even"><th>Egyszerűsített jelentkezés</th><td>
+                      <span  class="badge fw-bolder me-auto px-4 py-3"
+                      [ngClass]="{'badge-success': position.simpleApplicationAllowed === 0,
+                        'badge-warning': position.simpleApplicationAllowed === 1}">
+                        {{ (position.simpleApplicationAllowed === 0) ? 'igen'
+                        : (position.simpleApplicationAllowed === 1) ? 'nem'
+                        : '' }}</span>
+                      </td></tr>
+                    <tr class="odd"><th>Cég neve megjelenhet</th><td>
+                      <span  class="badge fw-bolder me-auto px-4 py-3"
+                      [ngClass]="{'badge-success': position.nameMayAppear === 0,
+                        'badge-warning': position.nameMayAppear === 1}">
+                        {{ (position.nameMayAppear === 0) ? 'igen'
+                        : (position.nameMayAppear === 1) ? 'nem'
+                        : '' }}</span>
+                     </td></tr>
+                  </tbody>
+                </table>
+                </div>
+              </div>
+              <div class="col-lg-6 col-xl-4">
+                <div class="table-responsive">
+                  <h4>Munkavégzés helye</h4>
+                <table class="table table-striped table-condensed table">
+                  <tbody><tr class="odd"><th>Ország</th><td>{{ position.countryId | lbFetch:"countries":"name" | async }}</td></tr>
+                    <tr class="even"><th>Irányítószám</th><td>{{ position.zip }}</td></tr>
+                    <tr class="odd"><th>Település</th><td>{{ position.countyId | lbFetch:"countries":"name" | async  }}</td></tr>
+                    <tr class="even"><th>Település szövegesen</th><td>{{ position.cityText }}</td></tr>
+                    <tr class="odd"><th>Tervezett kezdés dátuma</th><td>{{ position.startDate }}</td></tr>
+                  </tbody>
+                </table>
+                </div>
+              </div>
+            </div>
+
+            <div *ngFor="let positionHc of listPositionHc">
+            <div class="row mb-10">
+              <div class="col-lg-6 col-xl-12">
+                <div class="table-responsive">
+                  <h4>Pozíció részletei</h4>
+                <table class="table table-striped table-condensed table">
+                  <tbody><tr class="odd"><th>Rövid leírás</th><td><div [innerHTML]="position.shortDescription">{{ position.shortDescription }}</div>
+                  </td></tr>
+                  <tr class="even"><th>Cégbemutató</th><td><div [innerHTML]="position.companyDescription">{{ position.companyDescription }}</div>
+                   
+                  </td></tr>
+                  <tr class="odd"><th>Feladatok</th><td>
+                      <div [innerHTML]="position.description">
+                        {{position.description}}</div>
+                    </td></tr>
+                  <tr class="even"><th>Elvárások</th><td>
+                    <div [innerHTML]="position.requirements">{{ position.requirements }}</div>
+                    </td>
+                  </tr>
+                  <tr class="odd"><th>Előnyök</th><td>
+                    <div *ngIf="position.advantages !== null; else noresults">
+                      <div [innerHTML]="position.advantages">{{ position.advantages }}</div>
+                    </div>
+                    <ng-template #noresults><span class="null">Nincs megadva.</span>
+                    </ng-template>
+                   </td></tr>
+                  <tr class="even">
+                    <th>Igényelt létszám</th><td> 
+                      <div *ngIf="position.headcount !== null; else noresults">
+                        {{ position.headcount }}
+                      </div>
+                      <ng-template #noresults><span class="null">Nincs megadva.</span>
+                      </ng-template>  
+                  </td></tr>
+                  <tr class="odd"><th>Minimum életkor</th><td>
+                    <div *ngIf="positionHc.ageMin !== null; else noresults">
+                      {{ positionHc.ageMin }}
+                    </div>
+                    <ng-template #noresults><span class="null">Nincs megadva.</span>
+                    </ng-template></td></tr>
+                  <tr class="even"><th>Maximum életkor</th><td>
+                    <div *ngIf="positionHc.ageMax !== null; else noresults">
+                      {{ positionHc.ageMax }}
+                    </div>
+                    <ng-template #noresults><span class="null">Nincs megadva.</span>
+                    </ng-template>
+                    </td></tr>
+                  <tr class="odd"><th>Szakterület</th><td>{{ position.fieldsOfWorkCategoryId | lbFetch:"fields-of-work-categories":"name" | async }}</td></tr>
+                  <!-- <tr class="even"><th>Munkakör</th><td>értékesítési tanácsadó</td></tr>
+                   <tr class="odd"><th>Munkavállalói státusz</th><td>megbízás határozatlan</td></tr> -->
+                  <tr class="even"><th>Munkarend</th><td> 
+                    <div *ngIf="positionHc.workOrder !== null; else noresults">
+                      {{ (positionHc.workOrder === 10) ? '1 műszak'
+                      : (positionHc.workOrder === 20) ? '2 műszak'
+                      : (positionHc.workOrder === 30) ? '3 műszak'
+                      : (positionHc.workOrder === 40) ? 'állandó hétvége'
+                      : (positionHc.workOrder === 50) ? 'időszakos hétvége'
+                      : (positionHc.workOrder === 60) ? 'kötetlen'
+                      : (positionHc.workOrder === 70) ? 'megszakítás nélküli'
+                      : '' }}
+                    </div>
+                    <ng-template #noresults><span class="null">Nincs találat.</span>
+                    </ng-template>
+                  </td>
+                  </tr>
+                  <tr class="odd"><th>Munkaidő típus</th><td><ng-container *ngIf="positionHc.workTimeType !== null; else isEmpty"><ng-container #isEmpty><span class="null">Nincs megadva.</span></ng-container></ng-container></td></tr>
+                  </tbody>
+                </table>
+                </div>
+              </div>
+            </div>
+            <div class="row mb-10">
+              <div class="col-lg-6 col-xl-4">
+                <div class="table-responsive">
+                  <h4>Jövedelem adatok</h4>
+                <table class="table table-striped table-condensed table">
+                  <tbody>
+                    <tr class="odd"><th>Bértípus</th>
+                      <td>
+                        <div *ngIf="positionHc.salaryType !== null; else noresults">
+                          {{ (positionHc.salaryType === 10) ? 'éves'
+                            : (positionHc.salaryType === 20) ? 'havi'
+                            : (positionHc.salaryType === 30) ? 'heti'
+                            : (positionHc.salaryType === 40) ? 'napi'
+                            : (positionHc.salaryType === 50) ? 'óra'
+                            : '' }}
+                        </div>
+                        <ng-template #noresults><span class="null">Nincs találat.</span>
+                        </ng-template>
+                      </td>
+                    </tr>
+                    <tr class="even"><th>Bruttó alapbér alsó határ</th><td>
+                      <div *ngIf="positionHc.salaryMin !== null; else noresults">
+                      {{positionHc.salaryMin}}
+                    </div>
+                    <ng-template #noresults><span class="null">Nincs találat.</span>
+                    </ng-template></td></tr>
+                    <tr class="odd"><th>Bruttó alapbér felső határ</th><td>
+                      <div *ngIf="positionHc.salaryMax !== null; else noresults">
+                        {{positionHc.salaryMax}}
+                      </div>
+                      <ng-template #noresults><span class="null">Nincs találat.</span>
+                      </ng-template>                    
+                    </td></tr>
+                    <tr class="even"><th>Teljesítménybér százalék</th><td>
+                      <div *ngIf="positionHc.performanceSalaryPercent !== null; else noresults">
+                        {{positionHc.performanceSalaryPercent}}
+                      </div>
+                      <ng-template #noresults><span class="null">Nincs találat.</span>
+                      </ng-template> </td></tr>
+                    <tr class="odd"><th>Teljesítménybér összeg</th><td>
+                      <div *ngIf="positionHc.performanceSalary !== null; else noresults">
+                        {{positionHc.performanceSalary}}
+                      </div>
+                      <ng-template #noresults><span class="null">Nincs találat.</span>
+                      </ng-template></td></tr>
+                    <!-- <tr class="even"><th>Egyéb juttatások</th><td><ng-container *ngIf="positionHc.salaryType !== null; else isEmpty"><ng-container #isEmpty><span class="null">Nincs megadva.</span></ng-container></ng-container></td></tr> -->
+                    </tbody>
+                </table>
+                </div>
+              </div>
+            </div>
+          </div>
+            <div class="row mb-10">
+              <div class="col-lg-6 col-xl-4">
+                <div class="table-responsive">
+                  <h4>Szükséges nyelvismeret</h4>
+                  <table class="table table-striped table-condensed table">
+                    <thead>
+                    <tr>
+                    <th id="yw5_c0">Nyelv</th><th id="yw5_c1">Szint szóban</th><th id="yw5_c2">Szint írásban</th></tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let languages of listLanguage">
+                      <td><div *ngIf="languages.languageId !== null; else noresults">
+                        {{languages.languageId | lbFetch:"languages":"name" | async}}
+                      </div>
+                      <ng-template #noresults><span class="null">Nincs találat.</span>
+                      </ng-template></td>
+                      <td><div *ngIf="languages.spokenLevel !== null; else noresults">
+                        {{ (languages.spokenLevel === 1) ? 'alapfok'
+                            : (languages.spokenLevel === 2) ? 'középfok'
+                            : (languages.spokenLevel === 3) ? 'felsőfok'
+                            : '' }}
+                      </div>
+                      <ng-template #noresults><span class="null">Nincs találat.</span>
+                      </ng-template></td>
+                      <td><div *ngIf="languages.writtenLevel !== null; else noresults">
+                        {{ (languages.writtenLevel === 1) ? 'alapfok'
+                            : (languages.writtenLevel === 2) ? 'középfok'
+                            : (languages.writtenLevel === 3) ? 'felsőfok'
+                            : '' }}
+                      </div>
+                      <ng-template #noresults><span class="null">Nincs találat.</span>
+                      </ng-template></td></tr>
+                    </tbody>
+                    </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mb-10">
+              <div class="col-lg-6 col-xl-4">
+                <div class="table-responsive">
+                  <h4>Szükséges végzettségek</h4>
+                  <table class="table table-striped table-condensed table">
+                    <thead>
+                    <tr>
+                    <th id="yw6_c0">Végzettség</th><th id="yw6_c1">Tanulmányterület kategória</th><th id="yw6_c2">Tanulmányterület</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr class="odd" *ngFor="let qualifications of positionQualification">
+                        <td><div *ngIf="qualifications.qualificationId !== null; else noresults">
+                          {{qualifications.qualificationId | lbFetch:"qualifications":"name" | async}}
+                        </div>
+                        <ng-template #noresults><span class="null">Nincs találat.</span>
+                        </ng-template>
+                      </td>
+                        <td><div *ngIf="qualifications.fieldsOfStudyCategoryId !== null; else noresults">
+                          {{qualifications.fieldsOfStudyCategoryId | lbFetch:"fields-of-study-categories":"name" | async}}
+                        </div>
+                        <ng-template #noresults><span class="null">Nincs találat.</span>
+                        </ng-template></td>
+                        <td><div *ngIf="qualifications.fieldsOfStudyId !== null; else noresults">
+                          {{qualifications.fieldsOfStudyId | lbFetch:"fields-of-studies":"name" | async}}
+                        </div>
+                        <ng-template #noresults><span class="null">Nincs találat.</span>
+                        </ng-template></td>
+                      </tr> 
+                    </tbody>
+                    </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mb-10">
+              <div class="col-lg-6 col-xl-4">
+                <div class="table-responsive">
+                  <h4>Szükséges számítógépes ismeretek</h4>
+                  <table class="table table-striped table-condensed table">
+                    <thead>
+                    <tr>
+                    <th id="yw7_c0">Kategória</th><th id="yw7_c1">Számítógépes imeret</th><th id="yw7_c2">Szint</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr class="odd" *ngFor="let computerSkills of positionComputerSkills">
+                        <td><div *ngIf="computerSkills.computerSkillCategoryId !== null; else noresults">
+                          {{computerSkills.computerSkillCategoryId | lbFetch:"computer-skill-categories":"name" | async}}
+                        </div>
+                        <ng-template #noresults><span class="null">Nincs találat.</span>
+                        </ng-template>
+                        </td>
+                        <td><div *ngIf="computerSkills.computerSkillId !== null; else noresults">
+                          {{computerSkills.computerSkillId | lbFetch:"computer-skills":"name" | async }}
+                        </div>
+                        <ng-template #noresults><span class="null">Nincs találat.</span>
+                        </ng-template></td>
+                        <td><div *ngIf="computerSkills.level !== null; else noresults">
+                          {{ (computerSkills.level === 1) ? 'kezdő'
+                            : (computerSkills.level === 2) ? 'haladó'
+                            : (computerSkills.level === 3) ? 'tapasztalt'
+                            : (computerSkills.level === 4) ? 'szakértő'
+                            : '' }}
+                        </div>
+                        <ng-template #noresults><span class="null">Nincs találat.</span>
+                        </ng-template></td>
+                      </tr>   
+                      </tbody>
+                    </table>
+              </div>
+            </div>
+          </div>
+
+            <div class="row mb-10">
+              <div class="table-responsive">
+                <h4>Szükséges jogosítványok</h4>
+                  <span *ngFor="let driving of listDrivingLicence" class="badge fw-bolder me-5 px-4 py-3 mb-5 badge-light">
+                    
+                    <div *ngIf="driving.drivingLicenceId !== null; else noresults">
+                      {{driving.drivingLicenceId}}
+                    </div>
+                    <ng-template #noresults><span class="null">Nincs találat.</span>
+                    </ng-template>
+                  </span>
+              </div>
+            </div>
+
+            <div class="row mb-10">
+              <div class="table-responsive">
+                <h4>Ráérés</h4>
+                <span class="fw-bolder me-5 px-4 py-3 mb-5">
+                  {{ position.spareTimeId | lbFetch:"positions":"name" | async }}
+                </span>
+              </div>
+            </div>
+
+              <div class="row mb-10">
+                <div class="table-responsive">
+                  <h4>Címkék</h4>
+                  <span *ngFor="let tags of positionTag" class="badge fw-bolder me-5 px-4 py-3 mb-5 badge-light">
+                    {{ tags.tag_id | lbFetch:"tags":"name" | async }}
+                  </span>
+              </div>
+            </div>
+          </div>
+          <!-- end::Header -->
+          <!-- begin::Header -->
+          <div class="tab-pane" [ngClass]="{ active: activeTab === 'Export' }">
+            <div class="row mb-10">
+              <div class="col-lg-9 col-xl-4">
+                <div class="table-responsive">
+                  <table class="table table-striped table-condensed table">
+                    <tbody>
+                    
+                      <tr class="odd" *ngFor="let referers of listReferer">
+                        <td>{{ referers.name }}</td><td>     
+                          <div class="row mb-0">
+                            <label class="col-lg-4 col-form-label fw-bold fs-6"
+                            >Nem</label
+                            >
+                            <div class="col-lg-8 d-flex align-items-center">
+                                <div class="form-check form-check-solid form-switch fv-row">
+                                    <input
+                                            class="form-check-input w-45px h-30px"
+                                            type="checkbox" 
+                                            id="isActive"
+                                    /><label class="form-check-label"></label>
+                                </div>
+                            </div>
+                        </div>
+                      </td></tr>
+                      </tbody>
+                  </table>
+                  </div>
+              </div>
+            </div>
+          </div>
+          <!-- end::Toolbar -->
+  
+          <!-- begin::Page Title -->
+          <div class="tab-pane" [ngClass]="{ active: activeTab === 'Jelentkezők' }">
+            <div class="row mb-12">
+              <div class="col-lg-12 col-xl-12">
+                <app-position-hc-tab></app-position-hc-tab>
+              </div>
+            </div>
+          </div>
+          <!-- end::Page Title -->
+  
+          <!-- begin::Content -->
+          <div class="tab-pane" [ngClass]="{ active: activeTab === 'Interjúk' }">
+            <div class="row mb-10">
+             
+            </div>
+          </div>
+          <!-- end::Content -->
+  
+          <!-- begin::Aside -->
+          <div class="tab-pane" [ngClass]="{ active: activeTab === 'Jogosultságok' }">
+            <div class="row mb-10">
+              <label class="col-lg-3 col-form-label text-lg-end">Pozíció gazda</label>
+              <div class="col-lg-9 col-xl-4">
+                {{ position.ownerUserId | lbFetch:"users":"name" | async }}
+                <p-dialog header="Header" [(visible)]="display" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+                    [draggable]="false" [resizable]="false">
+                   
+                        <ng-template pTemplate="footer">
+                            <p-button icon="pi pi-check" (click)="displayModal=false" label="Yes" class="p-button-text"></p-button>
+                            <p-button icon="pi pi-times" (click)="displayModal=false" label="No"></p-button>
+                        </ng-template>
+                </p-dialog>
+                <a class="btn btn-sm btn-primary cursor-pointer" (click)="showDialog()">Változtat</a>
+                
+              </div>
+            </div>
+            <div class="row mb-10">
+              <label class="col-lg-3 col-form-label text-lg-end">Pozícióhoz rendelt adminisztrátorok</label>
+              <div class="col-lg-9 col-xl-4">
+                <a class="btn btn-sm btn-primary cursor-pointer" (click)="addAdmin()">Adminisztrátor hozzárendelése</a>
+              </div>
+            </div>
+            <div class="row mb-10">
+              <div class="col-lg-9 col-xl-4">
+                <table class="table table-striped table-condensed table">
+                  <thead>
+                  <tr>
+                  <th id="permissions_grid_c0">Név</th><th id="permissions_grid_c1">Értesítések</th><th class="button-column" id="permissions_grid_c2">&nbsp;</th></tr>
+                  </thead>
+                  <tbody>
+                  <tr class="odd">
+                  <td>user u139</td><td><span class="label">nem</span></td><td style="width: 36px"> </td></tr>
+                  </tbody>
+                  </table>
+              </div>
+            </div>
+
+          </div>
+          <!-- end::Aside -->
+          <!-- begin::Footer -->
+          <div class="tab-pane" [ngClass]="{ active: activeTab === 'Üzenetek' }">
+            <div class="row mb-10">
+              <div class="col-lg-9 col-xl-8">
+              <h4>Új üzenet</h4>
+              <label class="col-form-label text-lg-end required">Szöveg</label>
+              <div class="col-lg-8 col-xl-8">
+                <form action="">
+                  <textarea
+                  class="form-control border-1 p-0 pe-10 resize-none min-h-125px"
+                  rows="1"
+                ></textarea><br />  
+                  <label
+                  class="form-check form-check-sm form-check-custom form-check-solid me-5"
+                  >
+                  <input class="form-check-input" type="checkbox" value="1" />
+                  <span class="form-check-label">Nyilvános üzenet. A foglalkoztató is látja.</span>
+                  </label>                
+                  <a class="btn btn-sm btn-primary cursor-pointer mb-5 mt-5">Elküld</a>
+                </form>
+              </div>
+              </div>
+            </div>
+          </div>
+          <!-- end::Footer -->
+          <div class="tab-pane" [ngClass]="{ active: activeTab === 'Napló' }">
+            <div class="row mb-10">
+              
+              <div class="col-lg-9 col-xl-6">
+                <table class="table table-striped table-condensed table">
+                  <thead>
+                  <tr>
+                  <th id="position_log_grid_c0">Dátum<span class="caret"></span></th><th id="position_log_grid_c1">Adminisztrátor</th><th id="position_log_grid_c2">Esemény<span class="caret"></span></th></tr>
+                  </thead>
+                  <tbody>
+                  <tr><td colspan="3" class="empty">
+                    <span class="empty">Nincs találat.</span></td></tr>
+                  </tbody>
+                  </table>
+              </div>
+              <div class="col-lg-9 col-xl-4">
+                <form action="">
+                  <label class="col-form-label text-lg-end">Dátumtól</label>
+                  <div class="col-lg-8 fv-row">
+                    <input
+                        type="date"
+                        class="form-control form-control-lg form-control-solid"
+                        name="name"
+                        formControlName="name"
+                        autocomplete="off"
+                    />
+                  </div>
+
+                  <label class="col-form-label text-lg-end">Dátumig</label>
+                  <div class="col-lg-8 fv-row">
+                    <input
+                        type="date"
+                        class="form-control form-control-lg form-control-solid"
+                        name="name"
+                        formControlName="name"
+                        autocomplete="off"
+                    />
+                </div>
+                <div class="col-lg-8 fv-row mt-5">
+                  <label class="col-form-label text-lg-end">User Employee Id</label>
+                  
+                  <select
+                    class="form-select form-select-solid form-select-lg fw-bold"
+                    name="type"
+                    formControlName="type"
+                    autocomplete="off"
+                          
+                  >
+                    <option selected="selected">Kérlek válassz...</option>
+                  </select>
+                </div>
+                <div class="col-lg-8 mb-5 fv-row">
+                  <label
+                    class="form-check form-check-sm form-check-custom form-check-solid me-5"
+                    >
+                    <input class="form-check-input" type="checkbox" value="1" />
+                    <span class="form-check-label">Pozíció gazda változás</span>
+                  </label>
+                  </div>
+                  <div class="col-lg-8 mb-5 fv-row">
+                  <label
+                    class="form-check form-check-sm form-check-custom form-check-solid me-5"
+                    >
+                    <input class="form-check-input" type="checkbox" value="1" />
+                    <span class="form-check-label">Admin hozzárendelés</span>
+                  </label>
+                </div>
+                <div class="col-lg-8 mb-5 fv-row">
+                  <label
+                    class="form-check form-check-sm form-check-custom form-check-solid me-5"
+                    >
+                    <input class="form-check-input" type="checkbox" value="1" />
+                    <span class="form-check-label">Admin törlés</span>
+                  </label>
+                </div>
+                <div class="col-lg-8 mb-5 fv-row">
+                  <label
+                    class="form-check form-check-sm form-check-custom form-check-solid me-5"
+                    >
+                    <input class="form-check-input" type="checkbox" value="1" />
+                    <span class="form-check-label">Jelentkezés</span>
+                  </label>
+                </div>
+                <div class="col-lg-8 mb-5 fv-row">
+                  <label
+                    class="form-check form-check-sm form-check-custom form-check-solid me-5"
+                    >
+                    <input class="form-check-input" type="checkbox" value="1" />
+                    <span class="form-check-label">
+                      Jelölés</span>
+                  </label>
+                </div>
+                <div class="col-lg-8 mb-5 fv-row">
+                  <label
+                    class="form-check form-check-sm form-check-custom form-check-solid me-5"
+                    >
+                    <input class="form-check-input" type="checkbox" value="1" />
+                    <span class="form-check-label">Státusz változás</span>
+                  </label>
+                </div>
+                <div class="col-lg-8 mb-5 fv-row">
+                  <label
+                    class="form-check form-check-sm form-check-custom form-check-solid me-5"
+                    >
+                    <input class="form-check-input" type="checkbox" value="1" />
+                    <span class="form-check-label">Paraméter változás</span>
+                  </label>
+                </div>
+                <div class="col-lg-8 mb-5 fv-row">
+                  <label
+                    class="form-check form-check-sm form-check-custom form-check-solid me-5"
+                    >
+                    <input class="form-check-input" type="checkbox" value="1" />
+                    <span class="form-check-label">Új megjegyzés</span>
+                  </label>
+                </div>
+                <div class="col-lg-8 mb-5 fv-row">
+                  <label
+                    class="form-check form-check-sm form-check-custom form-check-solid me-5"
+                    >
+                    <input class="form-check-input" type="checkbox" value="1" />
+                    <span class="form-check-label">Új fájl</span>
+                  </label>
+                </div>
+                <a class="btn btn-sm btn-primary cursor-pointer mb-5 mt-5">Keresés</a>
+                <a class="btn explore-btn-secondary me-5">Reset</a>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane" [ngClass]="{ active: activeTab === 'Fájlok' }">
+            <div class="row mb-10">
+              <div class="col-lg-9 col-xl-6">
+              <h4>Új fájl</h4>
+              <label class="col-form-label text-lg-end required">Feladatok</label>
+              <div class="col-lg-8 col-xl-8">
+                <form action="">
+                  <input
+                        type="text"
+                        class="form-control form-control-lg form-control-solid"
+                        name="name"
+                        formControlName="name"
+                        autocomplete="off"
+                    />
+                  <br />  
+                  <label class="col-form-label text-lg-end required">Fájl</label>
+                  <input
+                    type="file"
+                    class="form-control form-control-lg form-control-solid"
+                    name="name"
+                    formControlName="name"
+                    autocomplete="off"
+              />                
+                  <a class="btn btn-sm btn-primary cursor-pointer mb-5 mt-5">Feltöltés</a>
+                </form>
+              </div>
+            </div>
+          </div>
+          </div>
+          <div class="tab-pane" [ngClass]="{ active: activeTab === 'Projekt' }">
+            
+          </div>
+        </div>
+      </div>
+      <!-- end::Body -->
+  
+      <!-- begin::Footer -->
+      <!-- <div class="card-footer py-6">
+        <div class="row">
+          <div class="col-lg-3"></div>
+          <div class="col-lg-9">
+            <button
+              type="button"
+              (click)="submitPreview()"
+              class="btn btn-primary me-2"
+              [disabled]="configLoading || resetLoading"
+            >
+              <ng-container *ngIf="!configLoading">
+                <span class="indicator-label">Preview</span>
+              </ng-container>
+  
+              <ng-container *ngIf="configLoading">
+                <span class="indicator-progress" [style.display]="'block'">
+                  Please wait...{{ " " }}
+                  <span
+                    class="spinner-border spinner-border-sm align-middle ms-2"
+                  ></span>
+                </span>
+              </ng-container>
+            </button>
+  
+            <button
+              type="button"
+              id="kt_layout_builder_reset"
+              class="btn btn-active-light btn-color-muted"
+              (click)="resetPreview()"
+              [disabled]="configLoading || resetLoading"
+            >
+              <ng-container *ngIf="!resetLoading">
+                <span class="indicator-label">Reset</span>
+              </ng-container>
+  
+              <ng-container *ngIf="resetLoading">
+                <span class="indicator-progress" [style.display]="'block'">
+                  Please wait...{{ " " }}
+                  <span
+                    class="spinner-border spinner-border-sm align-middle ms-2"
+                  ></span>
+                </span>
+              </ng-container>
+            </button>
+          </div>
+        </div>
+      </div> -->
+  
+      <!-- end::Footer -->
+    </form>
+    <!-- end::Form -->
+  </div>
+</ng-container>
+
+</ng-container>
+  
+<ng-template #loadingTpl>
+    <h4>Betöltés...</h4>
+</ng-template>

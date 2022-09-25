@@ -1,0 +1,115 @@
+<ng-container *ngIf="!(loadingSubject$ | async); else loadingTpl">
+    
+    <div class="card mb-5 mb-xl-10">
+        <div
+                class="card-header border-0"
+        >
+            <h3 class="card-title align-items-start flex-column">
+                <!-- <span class="card-label fw-bolder fs-3 mb-1">Alkalmi</span> -->
+                <span class="text-muted mt-1 fw-bold fs-7">{{ !isNew ? 'Szerkesztés' : 'Új hozzáadása' }}</span>
+            </h3>
+        </div>
+        <div id="kt_account_profile_details" class="collapse show">
+    
+                <form novalidate="novalidate" class="form" [formGroup]="fieldsOfStudyForm">
+                    <div class="card-body border-top p-9">
+                        <div class="row mb-6">
+                            <label class="col-lg-4 col-form-label required fw-bold fs-6">Megnevezés</label>
+                            <div class="col-lg-8 fv-row">
+                                <input
+                                        type="text"
+                                        class="form-control form-control-lg form-control-solid"
+                                        placeholder="Megnevezés"
+                                        name="name"
+                                        formControlName="name"
+                                        autocomplete="off"
+                                        [ngClass]="{
+                                            'is-invalid': fieldsOfStudyForm.controls['name'].invalid,
+                                            'is-valid': fieldsOfStudyForm.controls['name'].valid
+                                        }"
+                                />
+    
+                                <ng-container class="fv-help-block" class="fv-help-block"
+                                [ngTemplateOutlet]="formError"
+                                [ngTemplateOutletContext]="{
+                                    validation: 'required',
+                                    message: 'Megnevezés kötelező',
+                                    control: fieldsOfStudyForm.controls['name']
+                                }"
+                                ></ng-container>
+                                <!-- <div class="fv-plugins-message-container d-none">
+                                    <div class="fv-help-block">A név kötelező</div>
+                                </div> -->
+                            </div>
+                        </div>
+                        <div class="row mb-0">
+                            <label class="col-lg-4 col-form-label fw-bold fs-6"
+                            >Aktív</label
+                            >
+                            <div class="col-lg-8 d-flex align-items-center">
+                                <div class="form-check form-check-solid form-switch fv-row">
+                                    <input
+                                            class="form-check-input w-45px h-30px"
+                                            type="checkbox" 
+                                            formControlName="isActive"
+                                            [checked]="this.fieldsOfStudyForm.controls['isActive'].value"
+                                            id="isActive"
+                                    /><label class="form-check-label"></label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="card-footer d-flex justify-content-end py-6 px-9">
+                        <div class="alert alert-danger" *ngIf="error">
+                            <h3>Hiba történt a mentés során!</h3>
+                            <p [innerHTML]="errorMsg"></p>
+                        </div>
+                        <button (click)="reset()"
+                                type="button"
+                                class="btn explore-btn-secondary me-5"
+                        >
+                            Mégsem
+                        </button>
+                        <button
+                                type="button"
+                                class="btn btn-primary"
+                                [disabled]="!fieldsOfStudyForm.valid"
+                                (click)="saveSettings()"
+                        >
+                            <ng-container *ngIf="!isLoading">Mentés</ng-container>
+                            <ng-container *ngIf="isLoading">
+                    <span clas="indicator-progress" [style.display]="'block'">
+                      Kérem várj...{{ " " }}
+                      <span
+                              class="spinner-border spinner-border-sm align-middle ms-2"
+                      ></span>
+                    </span>
+                            </ng-container>
+                        </button>
+                    </div>
+                </form>
+                <ng-template
+                    #formError
+                    let-control="control"
+                    let-message="message"
+                    let-validation="validation"
+                    >
+                    <ng-container
+                        *ngIf="control.hasError(validation) && (control.dirty || control.touched)"
+                    >
+                        <div class="fv-plugins-message-container">
+                        <span role="alert">
+                            {{ message }}
+                        </span>
+                        </div>
+                    </ng-container>
+                </ng-template>
+            </div>
+    </div>
+    
+    </ng-container>
+    
+    <ng-template #loadingTpl>
+        <h4>Betöltés...</h4>
+    </ng-template>
